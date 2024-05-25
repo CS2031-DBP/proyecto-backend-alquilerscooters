@@ -1,4 +1,4 @@
-package com.example.alquiler_scooters.usuario.domain;
+package com.example.alquiler_scooters.scooter.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,10 +17,6 @@ private Long id;
 private String estado;
 
 private String email;
-
-private String telefono;
-
-private String estado;
 
 private LocalDate fechaRegistro = LocalDate.now();
 }
