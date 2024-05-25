@@ -1,10 +1,12 @@
 package com.example.alquiler_scooters.usuario.domain;
 
+import com.example.alquiler_scooters.Viaje.domain.Viaje;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "USUARIOS")
@@ -25,4 +27,5 @@ public class Usuario {
     private String contrasena;
 
     private LocalDate fechaRegistro = LocalDate.now();
+
 }
