@@ -14,9 +14,11 @@ public class Scooter {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
 
+private String codigoQR;
+
 private String estado;
 
-private String email;
+private int nivelBateria;
 
-private LocalDate fechaRegistro = LocalDate.now();
+private String ubicacionActual;
 }
