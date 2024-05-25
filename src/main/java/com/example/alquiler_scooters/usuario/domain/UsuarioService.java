@@ -38,4 +38,4 @@ public class UsuarioService {
             return usuarioRepository.save(usuario);
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
     }
-}1
+}
