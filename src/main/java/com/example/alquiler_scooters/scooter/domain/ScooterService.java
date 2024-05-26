@@ -25,19 +25,20 @@ public class ScooterService {
         return scooterRepository.findById(id);
     }
 
+
     public Scooter save(Scooter scooter) {
         Scooter savedScooter = scooterRepository.save(scooter);
-        // Generar el código QR
-        String qrText = String.valueOf(savedScooter.getId());
-        String qrCodePath = "target/qr_codes" + savedScooter.getId() + ".png";
         try {
-            QRCodeGenerator.generateQRCode(qrText, 350, 350, qrCodePath);
-            savedScooter.setCodigoQR(qrCodePath);
-            scooterRepository.save(savedScooter);
+            // Generar el código QR y guardar la imagen en la base de datos
+            String qrCodeText = String.valueOf(savedScooter.getId());
+            byte[] qrCodeImage = QRCodeGenerator.generateQRCodeImage(qrCodeText, 350, 350);
+            savedScooter.setQrCodeImage(qrCodeImage);
+            // Guardar nuevamente el scooter actualizado con la imagen QR
+            savedScooter = scooterRepository.save(savedScooter);
         } catch (WriterException | IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al generar el código QR para el scooter con ID: " + savedScooter.getId(), e);
+            throw new RuntimeException("Could not generate QR Code: " + e.getMessage());
         }
+
         return savedScooter;
     }
 

@@ -1,3 +1,4 @@
+/*
 package com.example.alquiler_scooters.scooter.application;
 
 import org.springframework.boot.SpringApplication;
@@ -8,3 +9,4 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class ScooterConfiguration {
 }
+*/

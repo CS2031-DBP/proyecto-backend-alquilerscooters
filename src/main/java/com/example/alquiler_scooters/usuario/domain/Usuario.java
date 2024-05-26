@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "USUARIOS")
+@Table(name = "usuarios")
 @Data
 public class Usuario {
 

@@ -14,17 +14,15 @@ public class Scooter {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;  // Cambiado de uuid a id
 
-    // @Column(unique = true)  // Descomentar si decides usar código QR único más adelante
-    //private String codigoQR;
-
     @Enumerated(EnumType.STRING)  // Usar enum para controlar los estados
     private EstadoScooter estado;
-
-    private String codigoQR;
 
     private int nivelBateria;
 
     private String ubicacionActual = "-12.08956475722276, -77.04464072972125";  // Valor predeterminado
+
+    @Lob
+    private byte[] qrCodeImage;  // Campo para almacenar la imagen del código QR
 
     // Enumeración para el estado del scooter
     public enum EstadoScooter {
