@@ -7,22 +7,31 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-@Table(name = "VIAJE")
+@Table(name = "viaje")
 @Data
 public class Viaje {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
-    private Long usuarioId;
-    private Long scooterId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuarioId;
+
+    @ManyToOne
+    @JoinColumn(name = "scooter_id", nullable = false)
+    private Scooter scooterId;
+
     private LocalDateTime horaInicio;
     private LocalDateTime horaFin;
-    private String ubicacionInicio;
-    private String ubicacionFin;
-    private Float costo;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Scooter ubicacionInicio;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Scooter ubicacionFin;
+
+    private Double costo;
 }
