@@ -14,66 +14,45 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/recompensas")
 public class RecompensaController {
-    private final RecompensaService recompensaService;
-
     @Autowired
-    public RecompensaController(RecompensaService recompensaService) {
-        this.recompensaService = recompensaService;
-    }
+    private RecompensaService recompensaService;
 
     @GetMapping
-    public ResponseEntity<List<Recompensa>> obtenerTodasLasRecompensas() {
-        List<Recompensa> recompensas = recompensaService.obtenerTodasLasRecompensas();
-        return new ResponseEntity<>(recompensas, HttpStatus.OK);
+    public List<Recompensa> getAllRecompensas() {
+        return recompensaService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Recompensa> getRecompensaById(@PathVariable Long id) {
+        return recompensaService.findById(id)
+                .map(recompensa -> ResponseEntity.ok().body(recompensa))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Recompensa> guardarRecompensa(@RequestBody Recompensa recompensa) {
-        Recompensa nuevaRecompensa = recompensaService.guardarRecompensa(recompensa);
-        return new ResponseEntity<>(nuevaRecompensa, HttpStatus.CREATED);
+    public Recompensa createRecompensa(@RequestBody Recompensa recompensa) {
+        return recompensaService.save(recompensa);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Recompensa> actualizarRecompensaCompleta(@PathVariable Long id, @RequestBody Recompensa recompensaDetalles) {
-        Optional<Recompensa> recompensaOptional = recompensaService.obtenerRecompensaPorId(id);
-        if (recompensaOptional.isPresent()) {
-            Recompensa recompensa = recompensaOptional.get();
-            recompensa.setUsuarioId(recompensaDetalles.getUsuarioId());
-            recompensa.setDescripcion(recompensaDetalles.getDescripcion());
-            recompensa.setFecha(recompensaDetalles.getFecha());
-            Recompensa recompensaActualizada = recompensaService.guardarRecompensa(recompensa);
-            return new ResponseEntity<>(recompensaActualizada, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Recompensa> updateRecompensa(@PathVariable Long id, @RequestBody Recompensa recompensaDetails) {
+        Recompensa updatedRecompensa = recompensaService.updateRecompensa(id, recompensaDetails);
+        return updatedRecompensa != null ? ResponseEntity.ok().body(updatedRecompensa) : ResponseEntity.notFound().build();
     }
+
     @PatchMapping("/{id}")
-    public ResponseEntity<Recompensa> actualizarRecompensa(@PathVariable Long id, @RequestBody Recompensa recompensaDetalles) {
-        Optional<Recompensa> recompensaOptional = recompensaService.obtenerRecompensaPorId(id);
-        if (recompensaOptional.isPresent()) {
-            Recompensa recompensa = recompensaOptional.get();
-
-            // Actualizar los campos solo si los valores no son nulos
-            if (recompensaDetalles.getUsuarioId() != null) {
-                recompensa.setUsuarioId(recompensaDetalles.getUsuarioId());
-            }
-            if (recompensaDetalles.getDescripcion() != null) {
-                recompensa.setDescripcion(recompensaDetalles.getDescripcion());
-            }
-            if (recompensaDetalles.getFecha() != null) {
-                recompensa.setFecha(recompensaDetalles.getFecha());
-            }
-
-            Recompensa recompensaActualizada = recompensaService.guardarRecompensa(recompensa);
-            return new ResponseEntity<>(recompensaActualizada, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Recompensa> partialUpdateRecompensa(@PathVariable Long id, @RequestBody Recompensa recompensaDetails) {
+        Recompensa updatedRecompensa = recompensaService.updateRecompensa(id, recompensaDetails);
+        return updatedRecompensa != null ? ResponseEntity.ok().body(updatedRecompensa) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarRecompensa(@PathVariable Long id) {
-        recompensaService.eliminarRecompensa(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteRecompensa(@PathVariable Long id) {
+        if (recompensaService.findById(id).isPresent()) {
+            recompensaService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
