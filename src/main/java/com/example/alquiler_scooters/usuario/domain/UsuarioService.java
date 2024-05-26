@@ -1,6 +1,6 @@
 package com.example.alquiler_scooters.usuario.domain;
 
-import com.example.alquiler_scooters.usuario.dto.UserDetailsDto;
+import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +19,18 @@ public class UsuarioService {
     @Autowired
     ModelMapper mapper;
 
-    private UserDetailsDto convertToDto(Usuario usuario) {
-        return mapper.map(usuario, UserDetailsDto.class);
+    private UsuarioDetallesDto convertToDto(Usuario usuario) {
+        return mapper.map(usuario, UsuarioDetallesDto.class);
     }
 
-    public List<UserDetailsDto> findAll() {
+    public List<UsuarioDetallesDto> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<UserDetailsDto> findById(Long id) {
+    public Optional<UsuarioDetallesDto> findById(Long id) {
         return usuarioRepository.findById(id)
                 .map(this::convertToDto);
     }

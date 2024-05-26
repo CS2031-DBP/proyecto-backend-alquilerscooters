@@ -2,7 +2,7 @@ package com.example.alquiler_scooters.usuario.application;
 
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.domain.UsuarioService;
-import com.example.alquiler_scooters.usuario.dto.UserDetailsDto;
+import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +17,14 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<List<UserDetailsDto>> getAllUsuarios() {
-        List<UserDetailsDto> usuarios = usuarioService.findAll();
+    public ResponseEntity<List<UsuarioDetallesDto>> getAllUsuarios() {
+        List<UsuarioDetallesDto> usuarios = usuarioService.findAll();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDetailsDto> getUsuarioById(@PathVariable Long id) {
-        Optional<UserDetailsDto> usuario = usuarioService.findById(id);
+    public ResponseEntity<UsuarioDetallesDto> getUsuarioById(@PathVariable Long id) {
+        Optional<UsuarioDetallesDto> usuario = usuarioService.findById(id);
         return usuario.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
