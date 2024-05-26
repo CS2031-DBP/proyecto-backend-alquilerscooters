@@ -2,6 +2,7 @@ package com.example.alquiler_scooters.scooter.application;
 
 import com.example.alquiler_scooters.scooter.domain.Scooter;
 import com.example.alquiler_scooters.scooter.domain.ScooterService;
+import com.example.alquiler_scooters.scooter.dto.ScooterDetailsDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,16 @@ public class ScooterController {
     ScooterService scooterService;
 
     @GetMapping
-    public List<Scooter> getAllScooters() {
-        return scooterService.findAll();
+    public ResponseEntity<List<ScooterDetailsDto>> getAllScooters() {
+        List<ScooterDetailsDto> scooters = scooterService.findAll();
+        return ResponseEntity.ok(scooters);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Scooter> getScooterById(@PathVariable UUID id) {
-        Optional<Scooter> scooter = scooterService.findById(id);
-        return scooter.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ScooterDetailsDto> getScooterById(@PathVariable UUID id) {
+        Optional<ScooterDetailsDto> scooter = scooterService.findById(id);
+        return scooter.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -36,9 +39,15 @@ public class ScooterController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteScooter(@PathVariable UUID id) {
-        scooterService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteScooter(@PathVariable UUID id) {
+        String result = scooterService.deleteById(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/low-battery")
+    public ResponseEntity<List<ScooterDetailsDto>> getScootersWithLowBattery() {
+        List<ScooterDetailsDto> scooters = scooterService.findScootersWithLowBattery();
+        return ResponseEntity.ok(scooters);
     }
 
     @PatchMapping("/{id}")
