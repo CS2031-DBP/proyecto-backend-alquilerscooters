@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "RECOMPENSA")
 public class Recompensa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +17,5 @@ public class Recompensa {
     private String descripcion;
 
     private LocalDate fecha;
+
 }
