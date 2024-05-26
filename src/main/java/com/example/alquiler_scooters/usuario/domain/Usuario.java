@@ -1,12 +1,10 @@
 package com.example.alquiler_scooters.usuario.domain;
 
-import com.example.alquiler_scooters.Viaje.domain.Viaje;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -22,6 +20,7 @@ public class Usuario {
     @Email
     private String email;
 
+    @Size(min = 9, max = 9)
     private String telefono;
 
     private String contrasena;
