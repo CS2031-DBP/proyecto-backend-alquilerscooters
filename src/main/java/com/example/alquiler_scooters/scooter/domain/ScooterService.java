@@ -26,9 +26,6 @@ public class ScooterService {
     @Autowired
     private ModelMapper mapper;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private ScooterDetailsDto convertToDto(Scooter scooter) {
         return mapper.map(scooter, ScooterDetailsDto.class);
     }
