@@ -1,3 +1,4 @@
+/*
 package com.example.alquiler_scooters.scooter.application;
 
 import com.example.alquiler_scooters.scooter.domain.ScooterService;
@@ -16,3 +17,4 @@ public class UbicacionScheduler {
         scooterService.actualizarUbicaciones();
     }
 }
+*/

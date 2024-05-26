@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/scooters")
 public class ScooterController {
     @Autowired
-    private ScooterService scooterService;
+    ScooterService scooterService;
 
     @GetMapping
     public List<Scooter> getAllScooters() {
@@ -22,13 +24,9 @@ public class ScooterController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Scooter> getScooterById(@PathVariable Long id) {
+    public ResponseEntity<Scooter> getScooterById(@PathVariable UUID id) {
         Optional<Scooter> scooter = scooterService.findById(id);
-        if (scooter.isPresent()) {
-            return ResponseEntity.ok(scooter.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return scooter.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -38,13 +36,13 @@ public class ScooterController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteScooter(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteScooter(@PathVariable UUID id) {
         scooterService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Scooter> updateScooter(@PathVariable Long id, @Valid @RequestBody Scooter scooterDetalles) {
+    public ResponseEntity<Scooter> updateScooter(@PathVariable UUID id, @Valid @RequestBody Scooter scooterDetalles) {
         try {
             Scooter scooterActualizado = scooterService.updateScooter(id, scooterDetalles);
             return ResponseEntity.ok(scooterActualizado);
@@ -53,13 +51,4 @@ public class ScooterController {
         }
     }
 
-    @PatchMapping("/{id}/ubicacion")
-    public ResponseEntity<Scooter> actualizarUbicacion(@PathVariable Long id, @RequestParam String nuevaUbicacion) {
-        try {
-            Scooter scooterActualizado = scooterService.actualizarUbicacion(id, nuevaUbicacion);
-            return ResponseEntity.ok(scooterActualizado);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
