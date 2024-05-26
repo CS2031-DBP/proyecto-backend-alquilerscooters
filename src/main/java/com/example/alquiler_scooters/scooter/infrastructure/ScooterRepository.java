@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface ScooterRepository extends JpaRepository<Scooter, UUID> {
-    @Query("SELECT s FROM Scooter s WHERE s.nivelBateria <= 25 AND (s.estado = 'DISPONIBLE' OR s.estado = 'EN_USO')")
+    @Query("SELECT s FROM Scooter s WHERE s.nivelBateria <= 35 AND (s.estado = 'DISPONIBLE' OR s.estado = 'EN_USO')")
     List<Scooter> findScootersWithLowBattery();
 }
