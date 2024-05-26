@@ -4,8 +4,6 @@ import com.example.alquiler_scooters.scooter.application.GeneradorCodigosQR;
 import com.example.alquiler_scooters.scooter.dto.ScooterDetailsDto;
 import com.example.alquiler_scooters.scooter.infrastructure.ScooterRepository;
 import com.google.zxing.WriterException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
