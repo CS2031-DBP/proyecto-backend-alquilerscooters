@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Base64;
 
-public class Base64ImageDecoder {
+public class GeneradorImagenesQR {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/alquilerscooters";
     private static final String USER = "postgres";
