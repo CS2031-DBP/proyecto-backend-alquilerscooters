@@ -19,7 +19,7 @@ public class Scooter {
 
     private int nivelBateria;
 
-    private String ubicacionActual = "-12.08956475722276, -77.04464072972125";  // Valor predeterminado
+    private String ubicacionActual;  // Valor predeterminado
 
     @Lob
     private byte[] qrCodeImage;  // Campo para almacenar la imagen del código QR
