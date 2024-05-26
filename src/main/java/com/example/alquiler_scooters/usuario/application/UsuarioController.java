@@ -3,7 +3,6 @@ package com.example.alquiler_scooters.usuario.application;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.domain.UsuarioService;
 import com.example.alquiler_scooters.usuario.dto.UserDetailsDto;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
