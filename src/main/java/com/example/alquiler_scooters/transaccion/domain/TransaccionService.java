@@ -13,28 +13,19 @@ public class TransaccionService {
     @Autowired
     private TransaccionRepository transaccionRepository;
 
-    public List<Transaccion> getAllTransacciones() {
+    public List<Transaccion> findAll() {
         return transaccionRepository.findAll();
     }
 
-    public Optional<Transaccion> getTransaccionById(Long id) {
+    public Optional<Transaccion> findById(Long id) {
         return transaccionRepository.findById(id);
     }
 
-    public List<Transaccion> getTransaccionesByUsuarioId(Long usuarioId) {
-        return transaccionRepository.findByUsuarioId(usuarioId);
-    }
-
-    public Transaccion createTransaccion(Long usuarioId, Long viajeId, Double monto) {
-        Transaccion transaccion = new Transaccion();
-        transaccion.setUsuarioId(usuarioId);
-        transaccion.setViajeId(viajeId);
-        transaccion.setMonto(monto);
-        transaccion.setFecha(LocalDateTime.now());
+    public Transaccion save(Transaccion transaccion) {
         return transaccionRepository.save(transaccion);
     }
 
-    public void deleteTransaccion(Long id) {
+    public void deleteById(Long id) {
         transaccionRepository.deleteById(id);
     }
 }

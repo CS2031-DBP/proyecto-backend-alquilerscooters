@@ -1,7 +1,5 @@
 package com.example.alquiler_scooters.transaccion.domain;
 
-import com.example.alquiler_scooters.Viaje.domain.Viaje;
-import com.example.alquiler_scooters.usuario.domain.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,4 +19,5 @@ public class Transaccion {
     private Double monto;
 
     private LocalDateTime fecha;
+
 }
