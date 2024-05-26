@@ -26,11 +26,7 @@ public class ScooterController {
     @GetMapping("/{id}")
     public ResponseEntity<Scooter> getScooterById(@PathVariable UUID id) {
         Optional<Scooter> scooter = scooterService.findById(id);
-        if (scooter.isPresent()) {
-            return ResponseEntity.ok(scooter.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return scooter.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
