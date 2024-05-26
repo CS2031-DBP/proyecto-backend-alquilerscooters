@@ -7,8 +7,6 @@ import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 
 public class QRCodeGenerator {
 

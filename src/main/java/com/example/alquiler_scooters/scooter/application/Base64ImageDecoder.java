@@ -1,10 +1,63 @@
 package com.example.alquiler_scooters.scooter.application;
 
+import org.postgresql.largeobject.LargeObject;
+import org.postgresql.largeobject.LargeObjectManager;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.*;
 import java.util.Base64;
 
 public class Base64ImageDecoder {
+
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/alquilerscooters";
+    private static final String USER = "postgres";
+    private static final String PASS = "postgres";
+
+    public static void main(String[] args) {
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn.setAutoCommit(false); // Desactivar el auto-commit
+
+            Statement stmt = conn.createStatement();
+            String sql = "SELECT id, qr_code_image FROM scooters";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                int oid = rs.getInt("qr_code_image");
+                byte[] qrCodeImage = readImageFromOID(conn, oid);
+                if (qrCodeImage != null) {
+                    String base64Image = Base64.getEncoder().encodeToString(qrCodeImage);
+                    String filePath = "target/qr_codes/QRCode_" + id + ".png";
+                    decodeAndSaveImage(base64Image, filePath);
+                }
+            }
+
+            rs.close();
+            stmt.close();
+            conn.commit(); // Hacer commit manualmente
+            conn.setAutoCommit(true); // Volver a activar el auto-commit
+            conn.close();
+
+            System.out.println("All QR codes have been saved successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static byte[] readImageFromOID(Connection conn, int oid) {
+        byte[] imageBytes = null;
+        try {
+            LargeObjectManager lobj = conn.unwrap(org.postgresql.PGConnection.class).getLargeObjectAPI();
+            LargeObject obj = lobj.open(oid, LargeObjectManager.READ);
+            imageBytes = obj.read((int) obj.size());
+            obj.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return imageBytes;
+    }
 
     public static void decodeAndSaveImage(String base64Image, String filePath) {
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
@@ -13,13 +66,5 @@ public class Base64ImageDecoder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        String codigoimagen = "iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACCElEQVR4Xu2aPbLCMAyE9YaCMkfwUTgaHC1HyRFSpmCenrRyQPzMGxrkZreJsT7T7MheB0Q/11WeZ/4R4SzCWYSzCGcRziKcRTirw6uEms38qMhpmVR/rTb3wplwPXzEY27r0WC9WNkHcp4bCoSHwFer30pywhOwmeurCI+De2mWaYsB4fGwbgdMqDEiaDTCw2A8vHT4tVW6iM9guYvwCNj9MrV1P3f2QS8Qrofv2gTdJD2qPYhw1tfhcBB+HYLBFqcXC9JbnyFcDKvfZbwUsdn6S91B9Fff/QhXw/ALDjrslxpENVuu/WwiXA4r0rK4g/YhBhbe4soJKwmXw8gAVmqxyqy8OYiZEOFaGBuaGyf7pQbGufx7nvY6wiVwzHhsjiZaJrzGtBl9SQWEa+CH3hHPz7Hp2Sp4+uAg4Rq4t5WHgfBrwSfsdbGccD3sfkE4gESaxk1zljcOEq6DJYR4EANvq+m9g4QrYHSTxkkkp6j6YHUHCQ+DL9JQsjDQHXTFTwCEy+Gb7n75rzDOrOi4s08RLoXj7aWdO7DSSks3bnZPo+MIV8Nuk2WA1q8wNoi3lygRHgTvfvXSEgktdL/vEB4Eg2mK63/Eg7CS8FDY83P6597rXke4BsbD4Ehop/0A8pMIqwjXwxLq8J6fTX7TfN7rCJfAn4lwFuEswlmEswhnEc4inPVF+A+S3BAjI2I4NwAAAABJRU5ErkJggg==";
-        String base64Image = codigoimagen;
-        String filePath = "QRCode.png";
-        decodeAndSaveImage(base64Image, filePath);
-        System.out.println("Image saved successfully.");
     }
 }
