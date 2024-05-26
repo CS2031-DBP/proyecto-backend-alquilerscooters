@@ -9,17 +9,27 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 
 @Service
 public class ScooterService {
     @Autowired
     private ScooterRepository scooterRepository;
 
+    public List<Scooter> findAll() {
+        return scooterRepository.findAll();
+    }
+
+    public Optional<Scooter> findById(UUID id) {
+        return scooterRepository.findById(id);
+    }
+
     public Scooter save(Scooter scooter) {
         Scooter savedScooter = scooterRepository.save(scooter);
         // Generar el código QR
-        String qrText = "https://yourapp.com/scooter/reserve?id=" + savedScooter.getId();
-        String qrCodePath = "path/to/qrcodes/qr_" + savedScooter.getId() + ".png";
+        String qrText = String.valueOf(savedScooter.getId());
+        String qrCodePath = "target/qr_codes" + savedScooter.getId() + ".png";
         try {
             QRCodeGenerator.generateQRCode(qrText, 350, 350, qrCodePath);
             savedScooter.setCodigoQR(qrCodePath);
@@ -31,45 +41,22 @@ public class ScooterService {
         return savedScooter;
     }
 
-    public List<Scooter> findAll() {
-        return scooterRepository.findAll();
-    }
-
-    public Optional<Scooter> findById(Long id) {
-        return scooterRepository.findById(id);
-    }
-
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         scooterRepository.deleteById(id);
     }
 
-    public Scooter updateScooter(Long id, Scooter scooterDetalles) {
-        Scooter scooter = scooterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Scooter no encontrado"));
-        scooter.setEstado(scooterDetalles.getEstado());
-        scooter.setNivelBateria(scooterDetalles.getNivelBateria());
-        scooter.setUbicacionActual(scooterDetalles.getUbicacionActual());
-        return scooterRepository.save(scooter);
-    }
-
-    public Scooter actualizarUbicacion(Long id, String nuevaUbicacion) {
-        Scooter scooter = scooterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Scooter no encontrado"));
-        scooter.setUbicacionActual(nuevaUbicacion);
-        return scooterRepository.save(scooter);
-    }
-
-    public void actualizarUbicaciones() {
-        List<Scooter> scooters = scooterRepository.findAll();
-        for (Scooter scooter : scooters) {
-            String nuevaUbicacion = obtenerNuevaUbicacion();
-            scooter.setUbicacionActual(nuevaUbicacion);
-            scooterRepository.save(scooter);
-        }
-    }
-
-    private String obtenerNuevaUbicacion() {
-        // Implementa la lógica para obtener la nueva ubicación
-        return "00.0000,00.0000"; // Ejemplo de coordenadas GPS
+    public Scooter updateScooter(UUID id, Scooter scooterDetalles) {
+        return scooterRepository.findById(id).map(scooter -> {
+            if (scooterDetalles.getEstado() != null) {
+                scooter.setEstado(scooterDetalles.getEstado());
+            }
+            if (scooterDetalles.getNivelBateria() != 0) { // Suponiendo que nivelBateria no puede ser 0 inicialmente
+                scooter.setNivelBateria(scooterDetalles.getNivelBateria());
+            }
+            if (scooterDetalles.getUbicacionActual() != null) {
+                scooter.setUbicacionActual(scooterDetalles.getUbicacionActual());
+            }
+            return scooterRepository.save(scooter);
+        }).orElseThrow(() -> new RuntimeException("Scooter no encontrado con id: " + id));
     }
 }
