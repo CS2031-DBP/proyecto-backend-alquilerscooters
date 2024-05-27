@@ -4,6 +4,7 @@ import com.example.alquiler_scooters.recompensa.infrastructure.RecompensaReposit
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,28 +13,24 @@ public class RecompensaService {
     @Autowired
     private RecompensaRepository recompensaRepository;
 
-    public List<Recompensa> findAll() {
+    public List<Recompensa> getAllRecompensas() {
         return recompensaRepository.findAll();
     }
 
-    public Optional<Recompensa> findById(Long id) {
+    public Optional<Recompensa> getRecompensaById(Long id) {
         return recompensaRepository.findById(id);
     }
 
-    public Recompensa save(Recompensa recompensa) {
-        return recompensaRepository.save(recompensa);
+    public List<Recompensa> getRecompensasByUsuarioId(Long usuarioId) {
+        return recompensaRepository.findByUsuarioId(usuarioId);
     }
 
-    public Recompensa updateRecompensa(Long id, Recompensa recompensaDetails) {
-        return recompensaRepository.findById(id).map(recompensa -> {
-            recompensa.setDescripcion(recompensaDetails.getDescripcion());
-            recompensa.setFecha(recompensaDetails.getFecha());
-            recompensa.setUsuarioId(recompensaDetails.getUsuarioId());
-            return recompensaRepository.save(recompensa);
-        }).orElse(null);
+    public Recompensa createRecompensa(Recompensa recompensa) {
+        return recompensaRepository.save(recompensa);
     }
 
     public void deleteById(Long id) {
         recompensaRepository.deleteById(id);
     }
+
 }

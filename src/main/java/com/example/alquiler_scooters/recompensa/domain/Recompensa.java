@@ -1,12 +1,12 @@
 package com.example.alquiler_scooters.recompensa.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.alquiler_scooters.usuario.domain.Usuario;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -15,9 +15,15 @@ public class Recompensa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long usuarioId;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    private String nombre;
 
     private String descripcion;
 
-    private LocalDate fecha;
+    private LocalDateTime fecha = LocalDateTime.now();
+
+
 }
