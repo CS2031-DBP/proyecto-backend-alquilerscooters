@@ -1,4 +1,4 @@
-package com.example.alquiler_scooters.Viaje.domain;
+package com.example.alquiler_scooters.viaje.domain;
 
 
 import com.example.alquiler_scooters.scooter.domain.Scooter;
@@ -7,31 +7,32 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "viaje")
 @Data
 public class Viaje {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuarioId;
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "scooter_id", nullable = false)
-    private Scooter scooterId;
+    private Scooter scooter;
 
     private LocalDateTime horaInicio;
     private LocalDateTime horaFin;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Scooter ubicacionInicio;
+    @Column(name = "punto_partida")
+    private String puntoPartida; // Coordenadas GPS como String
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Scooter ubicacionFin;
+    @Column(name = "punto_fin")
+    private String puntoFin;    // Coordenadas GPS como String
 
     private Double costo;
 }
