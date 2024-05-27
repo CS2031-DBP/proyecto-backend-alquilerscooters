@@ -2,7 +2,7 @@ package com.example.alquiler_scooters.usuario.application;
 
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.domain.UsuarioService;
-import jakarta.validation.Valid;
+import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,40 +17,34 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<Usuario> getAllUsuarios() {
-        return usuarioService.findAll();
+    public ResponseEntity<List<UsuarioDetallesDto>> getAllUsuarios() {
+        List<UsuarioDetallesDto> usuarios = usuarioService.findAll();
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioService.findById(id);
-        if (usuario.isPresent()) {
-            return ResponseEntity.ok(usuario.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UsuarioDetallesDto> getUsuarioById(@PathVariable Long id) {
+        Optional<UsuarioDetallesDto> usuario = usuarioService.findById(id);
+        return usuario.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> createUsuario(@Valid @RequestBody Usuario usuario) {
-        Usuario nuevoUsuario = usuarioService.save(usuario);
-        return ResponseEntity.ok(nuevoUsuario);
+    public ResponseEntity<String> createUsuario(@RequestBody Usuario usuario) {
+        String result = usuarioService.save(usuario);
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-        usuarioService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
+        String result = usuarioService.deleteById(id);
+        return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @Valid @RequestBody Usuario usuarioDetalles) {
-        try {
-            Usuario usuarioActualizado = usuarioService.updateUsuario(id, usuarioDetalles);
-            return ResponseEntity.ok(usuarioActualizado);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<String> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuarioDetalles) {
+        String result = usuarioService.updateUsuario(id, usuarioDetalles);
+        return ResponseEntity.ok(result);
     }
 
 }

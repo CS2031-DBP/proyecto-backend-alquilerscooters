@@ -1,75 +1,87 @@
 package com.example.alquiler_scooters.scooter.domain;
 
-import com.example.alquiler_scooters.scooter.application.QRCodeGenerator;
+import com.example.alquiler_scooters.scooter.application.GeneradorCodigosQR;
+import com.example.alquiler_scooters.scooter.dto.ScooterDetailsDto;
 import com.example.alquiler_scooters.scooter.infrastructure.ScooterRepository;
 import com.google.zxing.WriterException;
+import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @Service
 public class ScooterService {
     @Autowired
     private ScooterRepository scooterRepository;
 
+    @Autowired
+    private ModelMapper mapper;
+
+    private ScooterDetailsDto convertToDto(Scooter scooter) {
+        return mapper.map(scooter, ScooterDetailsDto.class);
+    }
+
+    public List<ScooterDetailsDto> findAll() {
+        List<Scooter> scooters = scooterRepository.findAll();
+        return scooters.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<ScooterDetailsDto> findById(UUID id) {
+        return scooterRepository.findById(id)
+                .map(this::convertToDto);
+    }
+
+
     public Scooter save(Scooter scooter) {
         Scooter savedScooter = scooterRepository.save(scooter);
-        // Generar el código QR
-        String qrText = "https://yourapp.com/scooter/reserve?id=" + savedScooter.getId();
-        String qrCodePath = "path/to/qrcodes/qr_" + savedScooter.getId() + ".png";
         try {
-            QRCodeGenerator.generateQRCode(qrText, 350, 350, qrCodePath);
-            savedScooter.setCodigoQR(qrCodePath);
-            scooterRepository.save(savedScooter);
+            // Generar el código QR y guardar la imagen en la base de datos
+            String qrCodeText = String.valueOf(savedScooter.getId());
+            byte[] qrCodeImage = GeneradorCodigosQR.generateQRCodeImage(qrCodeText, 350, 350);
+            savedScooter.setQrCodeImage(qrCodeImage);
+            // Guardar nuevamente el scooter actualizado con la imagen QR
+            savedScooter = scooterRepository.save(savedScooter);
         } catch (WriterException | IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al generar el código QR para el scooter con ID: " + savedScooter.getId(), e);
+            throw new RuntimeException("Could not generate QR Code: " + e.getMessage());
         }
+
         return savedScooter;
     }
 
-    public List<Scooter> findAll() {
-        return scooterRepository.findAll();
-    }
-
-    public Optional<Scooter> findById(Long id) {
-        return scooterRepository.findById(id);
-    }
-
-    public void deleteById(Long id) {
+    public String deleteById(UUID id) {
         scooterRepository.deleteById(id);
+        return "El scooter con id " + id + " ha sido eliminado.";
     }
 
-    public Scooter updateScooter(Long id, Scooter scooterDetalles) {
-        Scooter scooter = scooterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Scooter no encontrado"));
-        scooter.setEstado(scooterDetalles.getEstado());
-        scooter.setNivelBateria(scooterDetalles.getNivelBateria());
-        scooter.setUbicacionActual(scooterDetalles.getUbicacionActual());
-        return scooterRepository.save(scooter);
+    @Transactional
+    public List<ScooterDetailsDto> findScootersWithLowBattery() {
+        List<Scooter> scooters = scooterRepository.findScootersWithLowBattery();
+        return scooters.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
-    public Scooter actualizarUbicacion(Long id, String nuevaUbicacion) {
-        Scooter scooter = scooterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Scooter no encontrado"));
-        scooter.setUbicacionActual(nuevaUbicacion);
-        return scooterRepository.save(scooter);
-    }
-
-    public void actualizarUbicaciones() {
-        List<Scooter> scooters = scooterRepository.findAll();
-        for (Scooter scooter : scooters) {
-            String nuevaUbicacion = obtenerNuevaUbicacion();
-            scooter.setUbicacionActual(nuevaUbicacion);
-            scooterRepository.save(scooter);
-        }
-    }
-
-    private String obtenerNuevaUbicacion() {
-        // Implementa la lógica para obtener la nueva ubicación
-        return "00.0000,00.0000"; // Ejemplo de coordenadas GPS
+    public Scooter updateScooter(UUID id, Scooter scooterDetalles) {
+        return scooterRepository.findById(id).map(scooter -> {
+            if (scooterDetalles.getEstado() != null) {
+                scooter.setEstado(scooterDetalles.getEstado());
+            }
+            if (scooterDetalles.getNivelBateria() != 0) { // Suponiendo que nivelBateria no puede ser 0 inicialmente
+                scooter.setNivelBateria(scooterDetalles.getNivelBateria());
+            }
+            if (scooterDetalles.getUbicacionActual() != null) {
+                scooter.setUbicacionActual(scooterDetalles.getUbicacionActual());
+            }
+            return scooterRepository.save(scooter);
+        }).orElseThrow(() -> new RuntimeException("Scooter no encontrado con id: " + id));
     }
 }
