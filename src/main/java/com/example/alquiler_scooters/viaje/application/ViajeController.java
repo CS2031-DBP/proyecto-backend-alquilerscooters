@@ -1,6 +1,7 @@
 package com.example.alquiler_scooters.viaje.application;
 
 import com.example.alquiler_scooters.viaje.domain.ViajeService;
+import com.example.alquiler_scooters.viaje.dto.UpdateViajeDTO;
 import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,12 @@ public class ViajeController {
     public ResponseEntity<ViajeDTO> createViaje(@RequestBody ViajeDTO viajeDTO) {
         ViajeDTO savedViaje = viajeService.save(viajeDTO);
         return ResponseEntity.ok(savedViaje);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ViajeDTO> finalizarViaje(@PathVariable UUID id, @RequestBody UpdateViajeDTO updateViajeDTO) {
+        ViajeDTO updatedViaje = viajeService.finalizarViaje(id, updateViajeDTO);
+        return ResponseEntity.ok(updatedViaje);
     }
 
     @DeleteMapping("/{id}")

@@ -29,10 +29,10 @@ public class Viaje {
     private LocalDateTime horaFin;
 
     @Column(name = "punto_partida")
-    private String puntoPartida; // Coordenadas GPS como String
+    private String puntoPartida;
 
     @Column(name = "punto_fin")
-    private String puntoFin;    // Coordenadas GPS como String
+    private String puntoFin;
 
     private Double costo;
 }
