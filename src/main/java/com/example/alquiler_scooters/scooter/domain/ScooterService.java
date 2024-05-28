@@ -1,9 +1,11 @@
 package com.example.alquiler_scooters.scooter.domain;
 
+import com.example.alquiler_scooters.config.GPSUtils;
 import com.example.alquiler_scooters.scooter.application.GeneradorCodigosQR;
 import com.example.alquiler_scooters.scooter.dto.ScooterDetailsDto;
 import com.example.alquiler_scooters.scooter.infrastructure.ScooterRepository;
 import com.google.zxing.WriterException;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -23,6 +28,30 @@ public class ScooterService {
 
     @Autowired
     private ModelMapper mapper;
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    @PostConstruct
+    public void startLocationSimulation() {
+        scheduler.scheduleAtFixedRate(this::updateScooterLocations, 0, 10, TimeUnit.SECONDS);
+    }
+
+    private void updateScooterLocations() {
+        List<Scooter> scooters = scooterRepository.findAll();
+        for (Scooter scooter : scooters) {
+            if (scooter.getEstado() == Scooter.EstadoScooter.EN_USO) {
+                // Actualizar ubicación
+                String newLocation = GPSUtils.updateLocation(scooter.getUbicacionActual());
+                scooter.setUbicacionActual(newLocation);
+
+                // Disminuir nivel de batería
+                int newBatteryLevel = scooter.getNivelBateria() - 1;
+                scooter.setNivelBateria(Math.max(newBatteryLevel, 0)); // Asegurarse de que no baje de 0
+
+                scooterRepository.save(scooter);
+            }
+        }
+    }
 
     private ScooterDetailsDto convertToDto(Scooter scooter) {
         return mapper.map(scooter, ScooterDetailsDto.class);
@@ -75,7 +104,7 @@ public class ScooterService {
             if (scooterDetalles.getEstado() != null) {
                 scooter.setEstado(scooterDetalles.getEstado());
             }
-            if (scooterDetalles.getNivelBateria() != 0) { // Suponiendo que nivelBateria no puede ser 0 inicialmente
+            if (scooterDetalles.getNivelBateria() != 0) {
                 scooter.setNivelBateria(scooterDetalles.getNivelBateria());
             }
             if (scooterDetalles.getUbicacionActual() != null) {
