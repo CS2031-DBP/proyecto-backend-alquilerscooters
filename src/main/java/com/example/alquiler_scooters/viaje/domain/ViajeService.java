@@ -6,6 +6,7 @@ import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import com.example.alquiler_scooters.viaje.dto.UpdateViajeDTO;
 import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
+import com.example.alquiler_scooters.viaje.exceptions.NoViajesFoundException;
 import com.example.alquiler_scooters.viaje.infrastructure.ViajeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,11 @@ public class ViajeService {
 
     @Transactional(readOnly = true)
     public List<ViajeDTO> findByUsuarioId(Long usuarioId) {
-        return viajeRepository.findByUsuarioId(usuarioId).stream()
+        List<Viaje> viajes = viajeRepository.findByUsuarioId(usuarioId);
+        if (viajes.isEmpty()) {
+            throw new NoViajesFoundException("No tiene viajes registrados este id:  " + usuarioId);
+        }
+        return viajes.stream()
                 .map(viaje -> modelMapper.map(viaje, ViajeDTO.class))
                 .collect(Collectors.toList());
     }
