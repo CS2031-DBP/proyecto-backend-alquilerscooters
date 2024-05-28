@@ -25,6 +25,4 @@ public class Tarjeta {
     private String csc; // Código de seguridad de la Tarjeta de pago
 
     private String titular; // Nombre del titular de la Tarjeta de pago
-
-
 }
