@@ -1,5 +1,6 @@
 package com.example.alquiler_scooters.usuario.domain;
 
+import com.example.alquiler_scooters.metodo_pago.domain.Tarjeta;
 import com.example.alquiler_scooters.viaje.domain.Viaje;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -31,4 +32,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Viaje> viajes;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tarjeta> tarjetas;
 }
