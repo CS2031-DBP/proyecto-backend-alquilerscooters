@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +22,7 @@ public class Scooter {
 
     private int nivelBateria;
 
-    private String ubicacionActual; // "-12.08956475722276, -77.04464072972125"
+    private String ubicacionActual;
 
     @Lob
     private byte[] qrCodeImage;
@@ -33,5 +34,22 @@ public class Scooter {
         DISPONIBLE,
         EN_USO,
         MANTENIMIENTO
+    }
+
+    public Scooter() {
+        this.ubicacionActual = generateRandomLocation();
+    }
+
+    private static String generateRandomLocation() {
+        double minLatitude = -12.2;
+        double maxLatitude = -12.0;
+        double minLongitude = -77.2;
+        double maxLongitude = -77.0;
+        Random random = new Random();
+
+        double latitude = minLatitude + (maxLatitude - minLatitude) * random.nextDouble();
+        double longitude = minLongitude + (maxLongitude - minLongitude) * random.nextDouble();
+
+        return latitude + ", " + longitude;
     }
 }
