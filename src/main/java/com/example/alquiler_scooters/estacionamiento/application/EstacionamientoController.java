@@ -1,6 +1,7 @@
 package com.example.alquiler_scooters.estacionamiento.application;
 import com.example.alquiler_scooters.estacionamiento.domain.Estacionamiento;
 import com.example.alquiler_scooters.estacionamiento.domain.EstacionamientoService;
+import com.example.alquiler_scooters.estacionamiento.dto.EstacionamientoDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,13 @@ public class EstacionamientoController {
     private EstacionamientoService estacionamientoService;
 
     @GetMapping
-    public List<Estacionamiento> getAllEstacionamientos() {
+    public List<EstacionamientoDto> getAllEstacionamientos() {
         return estacionamientoService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Estacionamiento> getEstacionamientoById(@PathVariable Long id) {
-        Optional<Estacionamiento> estacionamiento = estacionamientoService.findById(id);
+    public ResponseEntity<EstacionamientoDto> getEstacionamientoById(@PathVariable Long id) {
+        Optional<EstacionamientoDto> estacionamiento = estacionamientoService.findById(id);
         if (estacionamiento.isPresent()) {
             return ResponseEntity.ok(estacionamiento.get());
         } else {

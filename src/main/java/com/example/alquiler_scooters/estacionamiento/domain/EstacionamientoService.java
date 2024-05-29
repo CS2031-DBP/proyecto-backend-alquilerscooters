@@ -2,14 +2,19 @@ package com.example.alquiler_scooters.estacionamiento.domain;
 
 import com.example.alquiler_scooters.estacionamiento.infrastructure.EstacionamientoRepository;
 import com.example.alquiler_scooters.scooter.domain.Scooter;
+import com.example.alquiler_scooters.scooter.dto.ScooterBasicDto;
+import com.example.alquiler_scooters.estacionamiento.dto.EstacionamientoDto;
 import com.example.alquiler_scooters.scooter.infrastructure.ScooterRepository;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -20,22 +25,33 @@ public class EstacionamientoService {
     @Autowired
     private ScooterRepository scooterRepository;
 
-    public List<Estacionamiento> findAll() {
+    @Autowired
+    private ModelMapper mapper;
+
+    public List<EstacionamientoDto> findAll() {
         List<Estacionamiento> estacionamientos = estacionamientoRepository.findAll();
-        for (Estacionamiento estacionamiento : estacionamientos) {
+        return estacionamientos.stream().map(estacionamiento -> {
             List<Scooter> scooters = scooterRepository.findByUbicacionActual(estacionamiento.getUbicacion());
-            estacionamiento.setScooters(scooters);
-        }
-        return estacionamientos;
+            List<ScooterBasicDto> scooterDtos = scooters.stream()
+                    .map(scooter -> mapper.map(scooter, ScooterBasicDto.class))
+                    .collect(Collectors.toList());
+            EstacionamientoDto dto = mapper.map(estacionamiento, EstacionamientoDto.class);
+            dto.setScooters(scooterDtos);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
-    public Optional<Estacionamiento> findById(Long id) {
+    public Optional<EstacionamientoDto> findById(Long id) {
         Optional<Estacionamiento> estacionamiento = estacionamientoRepository.findById(id);
-        estacionamiento.ifPresent(est -> {
+        return estacionamiento.map(est -> {
             List<Scooter> scooters = scooterRepository.findByUbicacionActual(est.getUbicacion());
-            est.setScooters(scooters);
+            List<ScooterBasicDto> scooterDtos = scooters.stream()
+                    .map(scooter -> mapper.map(scooter, ScooterBasicDto.class))
+                    .collect(Collectors.toList());
+            EstacionamientoDto dto = mapper.map(est, EstacionamientoDto.class);
+            dto.setScooters(scooterDtos);
+            return dto;
         });
-        return estacionamiento;
     }
 
     public Estacionamiento save(Estacionamiento estacionamiento) {
