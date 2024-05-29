@@ -4,7 +4,6 @@ import com.example.alquiler_scooters.scooter.domain.Scooter;
 import com.example.alquiler_scooters.scooter.infrastructure.ScooterRepository;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
-import com.example.alquiler_scooters.viaje.dto.UpdateViajeDTO;
 import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
 import com.example.alquiler_scooters.viaje.exceptions.NoViajesFoundException;
 import com.example.alquiler_scooters.viaje.infrastructure.ViajeRepository;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,6 +49,7 @@ public class ViajeService {
         if (usuarioOpt.isPresent() && scooterOpt.isPresent()) {
             Scooter scooter = scooterOpt.get();
             scooter.setEstado(Scooter.EstadoScooter.EN_USO);
+            viaje.setPuntoPartida(scooter.getUbicacionActual());
             scooterRepository.save(scooter);
 
             viaje.setUsuario(usuarioOpt.get());
@@ -62,10 +63,13 @@ public class ViajeService {
     }
 
     @Transactional
-    public ViajeDTO finalizarViaje(UUID id, UpdateViajeDTO updateViajeDTO) {
+    public ViajeDTO finalizarViaje(UUID id) {
         return viajeRepository.findById(id).map(viaje -> {
-            viaje.setHoraFin(updateViajeDTO.getHoraFin());
-            viaje.setPuntoFin(updateViajeDTO.getPuntoFin());
+            LocalDateTime horaFin = LocalDateTime.now();
+            String puntoFin = viaje.getScooter().getUbicacionActual();
+
+            viaje.setHoraFin(horaFin);
+            viaje.setPuntoFin(puntoFin);
 
             // Calcular el costo del viaje
             Duration duration = Duration.between(viaje.getHoraInicio(), viaje.getHoraFin());
@@ -82,6 +86,8 @@ public class ViajeService {
             return modelMapper.map(updatedViaje, ViajeDTO.class);
         }).orElseThrow(() -> new RuntimeException("Viaje no encontrado con id: " + id));
     }
+
+
 
     @Transactional(readOnly = true)
     public List<ViajeDTO> findAll() {

@@ -12,7 +12,7 @@ public class ViajeDTO {
     private UUID id;
     private UsuarioDetallesDto usuario;
     private ScooterDetailsDto scooter;
-    private LocalDateTime horaInicio;
+    private LocalDateTime horaInicio = LocalDateTime.now();
     private LocalDateTime horaFin;
     private String puntoPartida;
     private String puntoFin;
