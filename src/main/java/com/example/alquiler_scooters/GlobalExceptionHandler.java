@@ -4,6 +4,7 @@ package com.example.alquiler_scooters;
 import org.e2e.e2e.exceptions.ResourceNotFoundException;
 import org.e2e.e2e.passenger.exceptions.UnauthorizeOperationException;*/
 import com.example.alquiler_scooters.excepciones.ResourceNotFoundException;
+import com.example.alquiler_scooters.recompensa.exceptions.InvalidDataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,6 +54,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleUnauthorizeOperationException(UnauthorizeOperationException e) { return e.getMessage(); }
 */
-
+    @ExceptionHandler(InvalidDataException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleInvalidDataException(InvalidDataException e) {
+    return e.getMessage();
+    }
 }
 
