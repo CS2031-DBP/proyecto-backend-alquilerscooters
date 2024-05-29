@@ -1,6 +1,7 @@
 package com.example.alquiler_scooters.viaje.domain;
 
 
+import com.example.alquiler_scooters.recompensa.domain.Recompensa;
 import com.example.alquiler_scooters.scooter.domain.Scooter;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import jakarta.persistence.*;
@@ -35,4 +36,7 @@ public class Viaje {
     private String puntoFin;
 
     private Double costo;
+
+    @OneToOne(mappedBy = "viaje")
+    private Recompensa recompensa;
 }
