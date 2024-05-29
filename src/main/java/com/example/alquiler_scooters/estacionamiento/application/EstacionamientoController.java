@@ -1,5 +1,4 @@
 package com.example.alquiler_scooters.estacionamiento.application;
-
 import com.example.alquiler_scooters.estacionamiento.domain.Estacionamiento;
 import com.example.alquiler_scooters.estacionamiento.domain.EstacionamientoService;
 import jakarta.validation.Valid;
@@ -9,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/estacionamientos")
@@ -28,6 +29,16 @@ public class EstacionamientoController {
             return ResponseEntity.ok(estacionamiento.get());
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}/scooters/{scooterId}")
+    public ResponseEntity<String> checkScooterInEstacionamiento(@PathVariable Long id, @PathVariable UUID scooterId) {
+        try {
+            String mensaje = estacionamientoService.checkScooterInEstacionamiento(id, scooterId);
+            return ResponseEntity.ok(mensaje);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 

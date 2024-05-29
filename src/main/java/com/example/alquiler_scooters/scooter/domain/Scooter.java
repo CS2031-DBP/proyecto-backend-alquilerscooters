@@ -1,5 +1,6 @@
 package com.example.alquiler_scooters.scooter.domain;
 
+import com.example.alquiler_scooters.estacionamiento.domain.Estacionamiento;
 import com.example.alquiler_scooters.viaje.domain.Viaje;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,7 +13,6 @@ import java.util.UUID;
 @Table(name = "scooters")
 @Data
 public class Scooter {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -22,7 +22,7 @@ public class Scooter {
 
     private int nivelBateria;
 
-    private String ubicacionActual;
+    private String ubicacionActual = "10";
 
     @Lob
     private byte[] qrCodeImage;
@@ -30,13 +30,17 @@ public class Scooter {
     @OneToMany(mappedBy = "scooter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Viaje> viajes;
 
+    @ManyToOne
+    @JoinColumn(name = "estacionamiento_id")
+    private Estacionamiento estacionamiento;
+
     public enum EstadoScooter {
         DISPONIBLE,
         EN_USO,
         MANTENIMIENTO
     }
 
-    public Scooter() {
+  /*  public Scooter() {
         this.ubicacionActual = generateRandomLocation();
     }
 
@@ -51,5 +55,5 @@ public class Scooter {
         double longitude = minLongitude + (maxLongitude - minLongitude) * random.nextDouble();
 
         return latitude + ", " + longitude;
-    }
+    }*/
 }
