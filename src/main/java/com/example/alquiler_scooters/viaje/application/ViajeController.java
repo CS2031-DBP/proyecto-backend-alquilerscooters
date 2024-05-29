@@ -1,7 +1,6 @@
 package com.example.alquiler_scooters.viaje.application;
 
 import com.example.alquiler_scooters.viaje.domain.ViajeService;
-import com.example.alquiler_scooters.viaje.dto.UpdateViajeDTO;
 import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
 import com.example.alquiler_scooters.viaje.exceptions.NoViajesFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +48,8 @@ public class ViajeController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ViajeDTO> finalizarViaje(@PathVariable UUID id, @RequestBody UpdateViajeDTO updateViajeDTO) {
-        ViajeDTO updatedViaje = viajeService.finalizarViaje(id, updateViajeDTO);
+    public ResponseEntity<ViajeDTO> finalizarViaje(@PathVariable UUID id) {
+        ViajeDTO updatedViaje = viajeService.finalizarViaje(id);
         return ResponseEntity.ok(updatedViaje);
     }
 
