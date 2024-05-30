@@ -10,11 +10,12 @@ import java.util.UUID;
 @Data
 public class ViajeDTO {
     private UUID id;
-    private UsuarioDetallesDto usuario;
-    private ScooterDetailsDto scooter;
-    private LocalDateTime horaInicio = LocalDateTime.now();
+    private UsuarioSimpleDTO usuario;
+    private ScooterSimpleDTO scooter;
+    private LocalDateTime horaInicio;
     private LocalDateTime horaFin;
     private String puntoPartida;
     private String puntoFin;
     private Double costo;
+    private String estado;
 }
