@@ -1,6 +1,7 @@
 package com.example.alquiler_scooters.usuario.domain;
 
 import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
+import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +36,26 @@ public class UsuarioService {
                 .map(this::convertToDto);
     }
 
-    public String save(Usuario usuario) {
-        Usuario savedUsuario = usuarioRepository.save(usuario);
-        return "Se ha completado su registro " + savedUsuario.getNombre() + ", ¡bienvenido!";
+
+    public Usuario save(Usuario usuario) {
+        try {
+            return usuarioRepository.save(usuario);
+        } catch (Exception e) {
+            throw new UsuarioException("Los datos ingresados no son correctos.", 400);
+        }
     }
 
-    public String deleteById(Long id) {
-        usuarioRepository.deleteById(id);
-        return "Usuario con el id " + id + " ha sido eliminado correctamente.";
+    public void deleteById(Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()) {
+            usuarioRepository.deleteById(id);
+        } else {
+            throw new UsuarioException("El usuario con ese Id no existe", 400);
+        }
     }
 
-    public String updateUsuario(Long id, Usuario usuarioDetalles) {
-        usuarioRepository.findById(id).map(usuario -> {
+    public Usuario updateUsuario(Long id, Usuario usuarioDetalles) {
+        return usuarioRepository.findById(id).map(usuario -> {
             if (usuarioDetalles.getNombre() != null) {
                 usuario.setNombre(usuarioDetalles.getNombre());
             }
@@ -59,9 +68,11 @@ public class UsuarioService {
             if (usuarioDetalles.getContrasena() != null) {
                 usuario.setContrasena(usuarioDetalles.getContrasena());
             }
-            usuarioRepository.save(usuario);
-            return usuario;
-        }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
-        return "Usuario con id: " + id + " ha sido actualizado.";
+            try {
+                return usuarioRepository.save(usuario);
+            } catch (Exception e) {
+                throw new UsuarioException("No puedes actualizar los datos, ya que son incorrectos", 400);
+            }
+        }).orElseThrow(() -> new UsuarioException("Usuario no encontrado con id: " + id, 400));
     }
 }

@@ -5,11 +5,14 @@ import org.e2e.e2e.exceptions.ResourceNotFoundException;
 import org.e2e.e2e.passenger.exceptions.UnauthorizeOperationException;*/
 import com.example.alquiler_scooters.excepciones.ResourceNotFoundException;
 import com.example.alquiler_scooters.recompensa.exceptions.InvalidDataException;
+import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
@@ -59,5 +62,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public String handleInvalidDataException(InvalidDataException e) {
     return e.getMessage();
     }
+
+    @ExceptionHandler(UsuarioException.class)
+    public ResponseEntity<Object> handleUsuarioException(UsuarioException ex, WebRequest request) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGeneralException(Exception ex, WebRequest request) {
+        return ResponseEntity.status(500).body("Error interno del servidor");
+    }
+
 }
 
