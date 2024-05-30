@@ -4,20 +4,25 @@ import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     private UsuarioDetallesDto convertToDto(Usuario usuario) {
         return mapper.map(usuario, UsuarioDetallesDto.class);
@@ -63,5 +68,16 @@ public class UsuarioService {
             return usuario;
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
         return "Usuario con id: " + id + " ha sido actualizado.";
+    }
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = findByEmail(username);
+        return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getContrasena(), new ArrayList<>());
     }
 }

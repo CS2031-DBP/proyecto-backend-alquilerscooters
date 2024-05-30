@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Usuario {
     private Long id;
 
     private String nombre;
+
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     @Email
     private String email;
