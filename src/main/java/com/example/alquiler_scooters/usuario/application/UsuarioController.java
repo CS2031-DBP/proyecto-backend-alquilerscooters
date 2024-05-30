@@ -10,6 +10,7 @@ import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +28,16 @@ public class UsuarioController {
     @Autowired
     private ViajeService viajeService;
 
+    // ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UsuarioDetallesDto>> getAllUsuarios() {
         List<UsuarioDetallesDto> usuarios = usuarioService.findAll();
         return ResponseEntity.ok(usuarios);
     }
 
+    // ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getUsuarioById(@PathVariable Long id) {
         Optional<UsuarioDetallesDto> usuario = usuarioService.findById(id);
@@ -43,6 +48,8 @@ public class UsuarioController {
         }
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
         Usuario savedUsuario = usuarioService.save(usuario);
@@ -55,6 +62,8 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(usuarioDetallesDto);
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
         try {
@@ -65,6 +74,8 @@ public class UsuarioController {
         }
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuarioDetalles) {
         Usuario updatedUsuario = usuarioService.updateUsuario(id, usuarioDetalles);
@@ -77,6 +88,8 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDetallesDto);
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}/viajes")
     public ResponseEntity<?> getViajesByUsuarioId(@PathVariable Long id) {
         List<ViajeDTO> viajes = viajeService.findByUsuarioId(id);
@@ -84,5 +97,13 @@ public class UsuarioController {
             return ResponseEntity.status(404).body("El usuario no tiene viajes");
         }
         return ResponseEntity.ok(viajes);
+    }
+
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Usuario> getUsuarioByEmail(@PathVariable String email) {
+        Usuario usuario = usuarioService.findByEmail(email);
+        return ResponseEntity.ok(usuario);
     }
 }

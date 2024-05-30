@@ -5,20 +5,27 @@ import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     private UsuarioDetallesDto convertToDto(Usuario usuario) {
         return mapper.map(usuario, UsuarioDetallesDto.class);
@@ -75,4 +82,18 @@ public class UsuarioService {
             }
         }).orElseThrow(() -> new UsuarioException("Usuario no encontrado con id: " + id, 400));
     }
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = findByEmail(username);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name()));
+        return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getContrasena(), authorities);
+    }
+
 }
