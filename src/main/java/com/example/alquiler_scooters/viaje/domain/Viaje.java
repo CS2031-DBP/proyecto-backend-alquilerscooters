@@ -37,6 +37,16 @@ public class Viaje {
 
     private Double costo;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoViaje estado;
+
     @OneToOne(mappedBy = "viaje")
     private Recompensa recompensa;
+
+    public enum EstadoViaje {
+        ACTIVO,
+        FINALIZADO
+    }
 }
+
+

@@ -42,15 +42,15 @@ public class ViajeController {
     }
 
     @PostMapping
-    public ResponseEntity<ViajeDTO> createViaje(@RequestBody ViajeDTO viajeDTO) {
-        ViajeDTO savedViaje = viajeService.save(viajeDTO);
-        return ResponseEntity.ok(savedViaje);
+    public ResponseEntity<String> createViaje(@RequestBody ViajeDTO viajeDTO) {
+        String message = viajeService.save(viajeDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ViajeDTO> finalizarViaje(@PathVariable UUID id) {
-        ViajeDTO updatedViaje = viajeService.finalizarViaje(id);
-        return ResponseEntity.ok(updatedViaje);
+    public ResponseEntity<String> finalizarViaje(@PathVariable UUID id) {
+        String message = viajeService.finalizarViaje(id);
+        return ResponseEntity.ok(message);
     }
 
     @DeleteMapping("/{id}")
