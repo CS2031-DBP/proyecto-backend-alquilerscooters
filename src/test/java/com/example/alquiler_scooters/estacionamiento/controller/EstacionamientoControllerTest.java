@@ -4,6 +4,7 @@ import com.example.alquiler_scooters.estacionamiento.domain.Estacionamiento;
 import com.example.alquiler_scooters.estacionamiento.domain.EstacionamientoService;
 import com.example.alquiler_scooters.estacionamiento.dto.EstacionamientoDto;
 import com.example.alquiler_scooters.scooter.domain.Scooter;
+import com.example.alquiler_scooters.usuario.domain.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +22,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.alquiler_scooters.usuario.domain.Role.ADMIN;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -61,6 +64,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testGetAllEstacionamientos() throws Exception {
         Mockito.when(estacionamientoService.findAll()).thenReturn(Arrays.asList(estacionamientoDto));
 
@@ -71,6 +75,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testGetEstacionamientoById() throws Exception {
         Mockito.when(estacionamientoService.findById(1L)).thenReturn(Optional.of(estacionamientoDto));
 
@@ -80,6 +85,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testGetEstacionamientoByIdNotFound() throws Exception {
         Mockito.when(estacionamientoService.findById(1L)).thenReturn(Optional.empty());
 
@@ -88,6 +94,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testCreateEstacionamiento() throws Exception {
         Mockito.when(estacionamientoService.save(Mockito.any(Estacionamiento.class))).thenReturn(estacionamiento);
 
@@ -99,6 +106,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testDeleteEstacionamiento() throws Exception {
         Mockito.doNothing().when(estacionamientoService).deleteById(1L);
 
@@ -107,6 +115,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testUpdateEstacionamiento() throws Exception {
         Mockito.when(estacionamientoService.updateEstacionamiento(Mockito.eq(1L), Mockito.any(Estacionamiento.class)))
                 .thenReturn(estacionamiento);
@@ -119,6 +128,7 @@ public class EstacionamientoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testCheckScooterInEstacionamiento() throws Exception {
         UUID scooterId = scooter.getId();
         Mockito.when(estacionamientoService.checkScooterInEstacionamiento(1L, scooterId))
