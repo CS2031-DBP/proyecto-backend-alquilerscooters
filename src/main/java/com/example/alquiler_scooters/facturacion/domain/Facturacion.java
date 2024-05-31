@@ -3,6 +3,8 @@ package com.example.alquiler_scooters.facturacion.domain;
 import com.example.alquiler_scooters.metodo_pago.domain.Tarjeta;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.viaje.domain.Viaje;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,6 +13,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "facturaciones")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Facturacion.class)
 public class Facturacion {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

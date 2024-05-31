@@ -2,6 +2,8 @@ package com.example.alquiler_scooters.usuario.domain;
 
 import com.example.alquiler_scooters.metodo_pago.domain.Tarjeta;
 import com.example.alquiler_scooters.viaje.domain.Viaje;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios")
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Usuario.class)
 public class Usuario {
 
     @Id

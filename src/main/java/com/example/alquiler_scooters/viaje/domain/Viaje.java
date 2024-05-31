@@ -4,6 +4,8 @@ package com.example.alquiler_scooters.viaje.domain;
 import com.example.alquiler_scooters.recompensa.domain.Recompensa;
 import com.example.alquiler_scooters.scooter.domain.Scooter;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "viaje")
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Viaje.class)
 public class Viaje {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

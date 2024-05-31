@@ -1,9 +1,11 @@
 package com.example.alquiler_scooters.usuario.domain;
 
+import com.example.alquiler_scooters.eventos.WelcomeEmailEvent;
 import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,9 @@ public class UsuarioService {
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private UsuarioDetallesDto convertToDto(Usuario usuario) {
         return mapper.map(usuario, UsuarioDetallesDto.class);
@@ -36,8 +41,9 @@ public class UsuarioService {
     }
 
     public String save(Usuario usuario) {
-        Usuario savedUsuario = usuarioRepository.save(usuario);
-        return "Se ha completado su registro " + savedUsuario.getNombre() + ", ¡bienvenido!";
+        usuarioRepository.save(usuario);
+        applicationEventPublisher.publishEvent(new WelcomeEmailEvent(this, usuario.getEmail(), usuario.getNombre()));
+        return "Se ha completado su registro " + usuario.getNombre() + ", ¡bienvenido!";
     }
 
     public String deleteById(Long id) {
