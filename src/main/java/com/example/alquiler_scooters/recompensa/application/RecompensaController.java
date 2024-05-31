@@ -4,7 +4,6 @@ package com.example.alquiler_scooters.recompensa.application;
 import com.example.alquiler_scooters.recompensa.domain.Recompensa;
 import com.example.alquiler_scooters.recompensa.domain.RecompensaService;
 import com.example.alquiler_scooters.recompensa.dto.RecompensaDTO;
-import com.example.alquiler_scooters.usuario.domain.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;

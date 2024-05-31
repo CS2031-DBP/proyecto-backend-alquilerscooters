@@ -4,8 +4,8 @@ import com.example.alquiler_scooters.estacionamiento.domain.Estacionamiento;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.viaje.domain.Viaje;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,20 +18,22 @@ public class Recompensa {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @OneToOne
-    @JoinColumn(name = "viaje_id", nullable = false)
+    @JoinColumn(name = "viaje_id")
     private Viaje viaje;
 
     @ManyToOne
-    @JoinColumn(name = "estacionamiento_id", nullable = false)
+    @JoinColumn(name = "estacionamiento_id")
     private Estacionamiento estacionamiento;
+
+    @NotNull
+    private LocalDateTime fecha = LocalDateTime.now();
 
     private String nombre;
 
     private String descripcion;
-
-    private LocalDateTime fecha = LocalDateTime.now();
 }
+

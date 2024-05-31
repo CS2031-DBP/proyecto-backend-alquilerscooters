@@ -2,24 +2,31 @@ package com.example.alquiler_scooters.usuario.domain;
 
 import com.example.alquiler_scooters.eventos.WelcomeEmailEvent;
 import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
+import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -40,19 +47,25 @@ public class UsuarioService {
                 .map(this::convertToDto);
     }
 
-    public String save(Usuario usuario) {
-        usuarioRepository.save(usuario);
-        applicationEventPublisher.publishEvent(new WelcomeEmailEvent(this, usuario.getEmail(), usuario.getNombre()));
-        return "Se ha completado su registro " + usuario.getNombre() + ", ¡bienvenido!";
+    public Usuario save(Usuario usuario) {
+        try {
+            return usuarioRepository.save(usuario);
+        } catch (Exception e) {
+            throw new UsuarioException("Los datos ingresados no son correctos.", 400);
+        }
     }
 
-    public String deleteById(Long id) {
-        usuarioRepository.deleteById(id);
-        return "Usuario con el id " + id + " ha sido eliminado correctamente.";
+    public void deleteById(Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()) {
+            usuarioRepository.deleteById(id);
+        } else {
+            throw new UsuarioException("El usuario con ese Id no existe", 400);
+        }
     }
 
-    public String updateUsuario(Long id, Usuario usuarioDetalles) {
-        usuarioRepository.findById(id).map(usuario -> {
+    public Usuario updateUsuario(Long id, Usuario usuarioDetalles) {
+        return usuarioRepository.findById(id).map(usuario -> {
             if (usuarioDetalles.getNombre() != null) {
                 usuario.setNombre(usuarioDetalles.getNombre());
             }
@@ -65,9 +78,25 @@ public class UsuarioService {
             if (usuarioDetalles.getContrasena() != null) {
                 usuario.setContrasena(usuarioDetalles.getContrasena());
             }
-            usuarioRepository.save(usuario);
-            return usuario;
-        }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
-        return "Usuario con id: " + id + " ha sido actualizado.";
+            try {
+                return usuarioRepository.save(usuario);
+            } catch (Exception e) {
+                throw new UsuarioException("No puedes actualizar los datos, ya que son incorrectos", 400);
+            }
+        }).orElseThrow(() -> new UsuarioException("Usuario no encontrado con id: " + id, 400));
     }
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = findByEmail(username);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name()));
+        return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getContrasena(), authorities);
+    }
+
 }

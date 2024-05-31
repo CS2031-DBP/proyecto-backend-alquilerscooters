@@ -21,7 +21,7 @@ public class Tarjeta {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario; // Usuario al que pertenece el método de pago
 
-    private Integer numeroTarjeta; // Número de la Tarjeta de pago
+    private Long numeroTarjeta; // Número de la Tarjeta de pago
 
     private LocalDateTime fechaExpiracion; // Fecha de expiración de la Tarjeta de pago
 
