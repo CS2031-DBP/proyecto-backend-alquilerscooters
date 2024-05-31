@@ -1,7 +1,6 @@
 package com.example.alquiler_scooters.estacionamiento.model;
 
 import com.example.alquiler_scooters.estacionamiento.dto.EstacionamientoDto;
-import com.example.alquiler_scooters.scooter.dto.ScooterBasicDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
