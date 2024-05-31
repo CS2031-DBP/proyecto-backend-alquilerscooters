@@ -1,6 +1,8 @@
 package com.example.alquiler_scooters.metodo_pago.domain;
 
 import com.example.alquiler_scooters.usuario.domain.Usuario;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +11,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Tarjeta.class)
 public class Tarjeta {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

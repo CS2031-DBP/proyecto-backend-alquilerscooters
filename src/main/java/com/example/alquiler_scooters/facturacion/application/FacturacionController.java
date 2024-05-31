@@ -1,7 +1,6 @@
 package com.example.alquiler_scooters.facturacion.application;
 
-import com.example.alquiler_scooters.facturacion.domain.Facturacion;
-import com.example.alquiler_scooters.facturacion.domain.FacturacionService;
+import com.example.alquiler_scooters.facturacion.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,8 @@ public class FacturacionController {
     private FacturacionService facturacionService;
 
     @GetMapping
-    public ResponseEntity<List<Facturacion>> getAllFacturaciones() {
-        List<Facturacion> facturaciones = facturacionService.findAll();
+    public ResponseEntity<List<FacturacionDto>> getAllFacturaciones() {
+        List<FacturacionDto> facturaciones = facturacionService.findAll();
         return ResponseEntity.ok(facturaciones);
     }
 
@@ -32,7 +31,7 @@ public class FacturacionController {
     }
 
     @PostMapping
-    public ResponseEntity<Facturacion> createFacturacion(@RequestBody Facturacion facturacion) {
+    public ResponseEntity<Facturacion> createFacturacion(@RequestBody FacturacionRequest facturacion) {
         Facturacion savedFacturacion = facturacionService.save(facturacion);
         return ResponseEntity.ok(savedFacturacion);
     }

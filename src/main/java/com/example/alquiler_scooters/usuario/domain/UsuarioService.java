@@ -1,5 +1,6 @@
 package com.example.alquiler_scooters.usuario.domain;
 
+import com.example.alquiler_scooters.eventos.WelcomeEmailEvent;
 import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
@@ -27,6 +28,9 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     private UsuarioDetallesDto convertToDto(Usuario usuario) {
         return mapper.map(usuario, UsuarioDetallesDto.class);
     }
@@ -42,7 +46,6 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.findById(id)
                 .map(this::convertToDto);
     }
-
 
     public Usuario save(Usuario usuario) {
         try {

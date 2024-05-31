@@ -41,7 +41,9 @@ public class ViajeService {
     public String save(ViajeDTO viajeDTO) {
         Viaje viaje = new Viaje();
         viaje.setHoraInicio(viajeDTO.getHoraInicio());
+        viaje.setHoraFin(viajeDTO.getHoraFin());
         viaje.setPuntoPartida(viajeDTO.getPuntoPartida());
+        viaje.setPuntoFin(viajeDTO.getPuntoFin());
         viaje.setCosto(viajeDTO.getCosto());
         viaje.setEstado(Viaje.EstadoViaje.ACTIVO);  // Asignar estado del viaje como ACTIVO
 
