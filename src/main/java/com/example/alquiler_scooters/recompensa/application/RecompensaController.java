@@ -19,6 +19,8 @@ public class RecompensaController {
     @Autowired
     private RecompensaService recompensaService;
 
+    // ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<RecompensaDTO> getAllRecompensas() {
         return recompensaService.getAllRecompensas()
@@ -27,6 +29,8 @@ public class RecompensaController {
                 .collect(Collectors.toList());
     }
 
+    // ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<RecompensaDTO> getRecompensaById(@PathVariable Long id) {
         try {
@@ -37,6 +41,8 @@ public class RecompensaController {
         }
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/usuario/{usuarioId}")
     public List<RecompensaDTO> getRecompensasByUsuarioId(@PathVariable Long usuarioId) {
         return recompensaService.getRecompensasByUsuarioId(usuarioId)
@@ -45,6 +51,8 @@ public class RecompensaController {
                 .collect(Collectors.toList());
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<RecompensaDTO> createRecompensa(@RequestBody RecompensaDTO recompensaDTO) {
         try {
