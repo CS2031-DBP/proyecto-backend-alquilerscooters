@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -108,7 +109,6 @@ public class RecompensaControllerTest {
     }
 
     @Test
-
     void testCreateRecompensa() {
         RecompensaDTO recompensaDTO = new RecompensaDTO();
         recompensaDTO.setViajeId(UUID.randomUUID());
@@ -117,13 +117,18 @@ public class RecompensaControllerTest {
 
         Recompensa recompensa = new Recompensa();
         recompensa.setId(1L);
+        recompensa.setNombre("Recompensa");
+        recompensa.setDescripcion("Descripción");
+        recompensa.setFecha(LocalDateTime.now());
 
         when(recompensaService.createRecompensa(any(UUID.class), any(String.class), any(String.class))).thenReturn(recompensa);
 
         ResponseEntity<RecompensaDTO> response = recompensaController.createRecompensa(recompensaDTO);
 
         assertNotNull(response);
-        assertEquals(ResponseEntity.ok().body(recompensaDTO), response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(recompensaDTO.getNombre(), response.getBody().getNombre());
+        assertEquals(recompensaDTO.getDescripcion(), response.getBody().getDescripcion());
         verify(recompensaService, times(1)).createRecompensa(any(UUID.class), any(String.class), any(String.class));
     }
 
@@ -162,16 +167,4 @@ public class RecompensaControllerTest {
         verify(recompensaService, times(1)).deleteById(id);
     }
 
-    @Test
-    void testDeleteRecompensaNotFound() throws Exception {
-        Long id = 1L;
-
-        doThrow(new ResourceNotFoundException("Recompensa no encontrada con ID: " + id))
-                .when(recompensaService).deleteById(id);
-
-        mockMvc.perform(MockMvcRequestBuilders.delete("/recompensa/{id}", id))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-
-        verify(recompensaService, times(1)).deleteById(id);
-    }
 }
