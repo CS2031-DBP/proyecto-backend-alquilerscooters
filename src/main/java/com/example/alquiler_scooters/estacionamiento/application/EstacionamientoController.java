@@ -5,6 +5,7 @@ import com.example.alquiler_scooters.estacionamiento.dto.EstacionamientoDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +19,15 @@ public class EstacionamientoController {
     @Autowired
     private EstacionamientoService estacionamientoService;
 
+    // ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<EstacionamientoDto> getAllEstacionamientos() {
         return estacionamientoService.findAll();
     }
 
+    // ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<EstacionamientoDto> getEstacionamientoById(@PathVariable Long id) {
         Optional<EstacionamientoDto> estacionamiento = estacionamientoService.findById(id);
@@ -33,6 +38,8 @@ public class EstacionamientoController {
         }
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}/scooters/{scooterId}")
     public ResponseEntity<String> checkScooterInEstacionamiento(@PathVariable Long id, @PathVariable UUID scooterId) {
         try {
@@ -43,18 +50,24 @@ public class EstacionamientoController {
         }
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Estacionamiento> createEstacionamiento(@Valid @RequestBody Estacionamiento estacionamiento) {
         Estacionamiento nuevoEstacionamiento = estacionamientoService.save(estacionamiento);
         return ResponseEntity.ok(nuevoEstacionamiento);
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEstacionamiento(@PathVariable Long id) {
         estacionamientoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    // USER
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<Estacionamiento> updateEstacionamiento(@PathVariable Long id, @Valid @RequestBody Estacionamiento estacionamientoDetalles) {
         try {
