@@ -19,6 +19,8 @@ public class ScooterController {
     @Autowired
     ScooterService scooterService;
 
+
+
     @GetMapping
     public ResponseEntity<List<ScooterDetailsDto>> getAllScooters() {
         List<ScooterDetailsDto> scooters = scooterService.findAll();

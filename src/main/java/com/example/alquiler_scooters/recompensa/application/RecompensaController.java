@@ -7,6 +7,7 @@ import com.example.alquiler_scooters.recompensa.dto.RecompensaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class RecompensaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteRecompensa(@PathVariable Long id) {
         try {
             recompensaService.deleteById(id);
@@ -64,14 +66,22 @@ public class RecompensaController {
         }
     }
 
+
+
+
     private RecompensaDTO convertToDTO(Recompensa recompensa) {
-        RecompensaDTO recompensaDTO = new RecompensaDTO();
-        recompensaDTO.setId(recompensa.getId());
-        recompensaDTO.setUsuarioId(recompensa.getUsuario().getId());
-        recompensaDTO.setViajeId(recompensa.getViaje().getId());
-        recompensaDTO.setNombre(recompensa.getNombre());
-        recompensaDTO.setDescripcion(recompensa.getDescripcion());
-        recompensaDTO.setFecha(recompensa.getFecha());
-        return recompensaDTO;
+        RecompensaDTO dto = new RecompensaDTO();
+        dto.setId(recompensa.getId());
+        dto.setNombre(recompensa.getNombre());
+        dto.setDescripcion(recompensa.getDescripcion());
+
+        if (recompensa.getViaje() != null) {
+            dto.setViajeId(recompensa.getViaje().getId());
+        }
+
+        if (recompensa.getUsuario() != null) {
+            dto.setUsuarioId(recompensa.getUsuario().getId());
+        }
+        return dto;
     }
 }

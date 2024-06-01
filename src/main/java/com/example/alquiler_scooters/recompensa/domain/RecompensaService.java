@@ -34,6 +34,11 @@ public class RecompensaService {
         return recompensaRepository.findAll();
     }
 
+    @Autowired
+    public RecompensaService(RecompensaRepository recompensaRepository) {
+        this.recompensaRepository = recompensaRepository;
+    }
+
     public Recompensa getRecompensaById(Long id) {
         return recompensaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recompensa no encontrada con ID: " + id));
@@ -67,9 +72,11 @@ public class RecompensaService {
     }
 
     public void deleteById(Long id) {
-        if (!recompensaRepository.existsById(id)) {
+        Optional<Recompensa> recompensaOptional = recompensaRepository.findById(id);
+        if (recompensaOptional.isPresent()) {
+            recompensaRepository.deleteById(id);
+        } else {
             throw new ResourceNotFoundException("Recompensa no encontrada con ID: " + id);
         }
-        recompensaRepository.deleteById(id);
     }
 }
