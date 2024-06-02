@@ -10,12 +10,12 @@
 "La gestión de un servicio de alquiler de scooters puede ser compleja, especialmente cuando se trata de optimizar la distribución, mantener los vehículos y asegurar una experiencia de usuario sin problemas. Nuestro sistema aborda estos desafíos proporcionando herramientas para la gestión integral del servicio, desde la administración de usuarios y scooters hasta la optimización de rutas y el mantenimiento predictivo. Esto asegura que los scooters estén disponibles cuando y donde se necesiten, mejorando la satisfacción del usuario y la eficiencia del servicio."
 
 ## Miembros del Equipo 😎
-| Nombre                     | Usuario de GitHub | Contacto                       |
-|----------------------------|-------------------|-------------------------------|
-| Luis Fernando Lopez Chambi | user1             | user1@example.com             |
-| David Manuel Silva Mena    | user2             | user2@example.com             |
-| Estefano Aron Roque Cueto  | user3             | user3@example.com             |
-| Nicolas Perales            | user4             | user4@example.com             |
+| Nombre                     
+|----------------------------
+| Luis Fernando Lopez Chambi 
+| David Manuel Silva Mena    
+| Estefano Aron Roque Cueto  
+| Nicolas Perales            
 
 ## Arquitectura y Tecnologías Utilizadas ⚙️
 "Alquiler de Scooters" emplea una arquitectura modular y escalable, organizada en capas distintas que encapsulan funcionalidades específicas como la gestión de entidades, controladores, objetos de transferencia de datos (DTO) y repositorios. A continuación, se describen las tecnologías utilizadas:
