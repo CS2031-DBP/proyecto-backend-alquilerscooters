@@ -18,10 +18,10 @@ import java.util.Optional;
 @Service
 public class AuthService {
 
-    final UsuarioRepository usuarioRepository;
-    final JwtService jwtService;
-    final PasswordEncoder passwordEncoder;
-    final ModelMapper modelMapper;
+    private final UsuarioRepository usuarioRepository;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public AuthService(UsuarioRepository usuarioRepository, JwtService jwtService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
@@ -32,24 +32,27 @@ public class AuthService {
     }
 
     public AuthJwtResponse login(AuthLoginRequest req) {
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(req.getUsername());
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(req.getEmail());
 
-        if (usuario.isEmpty()) throw new UsernameNotFoundException("Email is not registered");
+        if (usuario.isEmpty()) {
+            throw new UsernameNotFoundException("Email is not registered");
+        }
 
-        if (!passwordEncoder.matches(req.getPassword(), usuario.get().getContrasena()))
+        if (!passwordEncoder.matches(req.getPassword(), usuario.get().getContrasena())) {
             throw new IllegalArgumentException("Password is incorrect");
+        }
 
         CustomUserDetails userDetails = new CustomUserDetails(usuario.get());
+        String token = jwtService.generateToken(userDetails);
 
-        AuthJwtResponse response = new AuthJwtResponse();
-        response.setToken(jwtService.generateToken(userDetails));
-        response.setId(usuario.get().getId());
-        return response;
+        return new AuthJwtResponse(token);
     }
 
     public AuthJwtResponse register(AuthRegisterRequest req){
         Optional<Usuario> usuario = usuarioRepository.findByEmail(req.getEmail());
-        if (usuario.isPresent()) throw new IllegalArgumentException("Email is already registered");
+        if (usuario.isPresent()) {
+            throw new IllegalArgumentException("Email is already registered");
+        }
 
         Usuario newUsuario = new Usuario();
         newUsuario.setNombre(req.getName());
@@ -62,10 +65,8 @@ public class AuthService {
         usuarioRepository.save(newUsuario);
 
         CustomUserDetails userDetails = new CustomUserDetails(newUsuario);
+        String token = jwtService.generateToken(userDetails);
 
-        AuthJwtResponse response = new AuthJwtResponse();
-        response.setToken(jwtService.generateToken(userDetails));
-        response.setId(newUsuario.getId());
-        return response;
+        return new AuthJwtResponse(token);
     }
 }

@@ -37,14 +37,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/auth/").permitAll()
+                                .requestMatchers("/auth/**").permitAll() // Permitir acceso a cualquier ruta bajo /auth/
                                 .anyRequest().authenticated()
                 )
                 .build();
@@ -57,7 +57,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST","PUT","DELETE", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Cambiado de "/" a "/**"
         return source;
     }
 
@@ -70,6 +70,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-
 }
