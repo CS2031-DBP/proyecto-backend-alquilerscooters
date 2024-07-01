@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class AuthJwtResponse {
     public String token;
-    public Long id;
 }
