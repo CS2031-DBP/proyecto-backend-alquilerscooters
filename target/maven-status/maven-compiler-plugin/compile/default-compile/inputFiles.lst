@@ -1,74 +1,74 @@
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\AlquilerScootersApplication.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\AuthController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\AuthImpl.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\AuthService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\CustomUserDetails.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\dto\AuthJwtResponse.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\dto\AuthLoginRequest.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\auth\dto\AuthRegisterRequest.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\AsyncConfig.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\EmailService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\GPSUtils.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\JwtAuthenticationFilter.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\JwtService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\SecurityConfig.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\config\Util.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\estacionamiento\application\EstacionamientoController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\estacionamiento\domain\Estacionamiento.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\estacionamiento\domain\EstacionamientoService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\estacionamiento\dto\EstacionamientoDto.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\estacionamiento\infrastructure\EstacionamientoRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\eventos\SendFacturaEvent.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\eventos\SendFacturaListener.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\eventos\WelcomeEmailEvent.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\eventos\WelcomeEmailEventListener.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\excepciones\ResourceNotFoundException.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\application\FacturacionController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\domain\Facturacion.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionCreateDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionDto.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionRequest.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\facturacion\infrastructure\FacturacionRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\GlobalExceptionHandler.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\metodo_pago\application\TarjetaController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\metodo_pago\domain\Tarjeta.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\metodo_pago\domain\TarjetaDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\metodo_pago\domain\TarjetaService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\metodo_pago\infrastructure\TarjetaRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\penalizacion\application\PenalizacionController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\penalizacion\domain\Penalizacion.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\penalizacion\domain\PenalizacionService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\penalizacion\infrastructure\PenalizacionRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\recompensa\application\RecompensaController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\recompensa\domain\Recompensa.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\recompensa\domain\RecompensaService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\recompensa\dto\RecompensaDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\recompensa\exceptions\InvalidDataException.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\recompensa\infrastructure\RecompensaRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\application\GeneradorCodigosQR.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\application\GeneradorImagenesQR.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\application\ScooterController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\domain\Scooter.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\domain\ScooterService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\dto\ScooterBasicDto.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\dto\ScooterDetailsDto.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\scooter\infrastructure\ScooterRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\application\UsuarioController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\domain\Role.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\domain\Usuario.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\domain\UsuarioDto.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\domain\UsuarioService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\dto\UsuarioDetallesDto.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\exceptions\UsuarioException.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\usuario\infrastructure\UsuarioRepository.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\application\ViajeController.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\domain\Viaje.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\domain\ViajeService.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\dto\FacturaViajeDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\dto\ScooterSimpleDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\dto\UpdateViajeDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\dto\UsuarioSimpleDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\dto\ViajeDTO.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\exceptions\NoViajesFoundException.java
-C:\Users\LUIS FERNANDO\UTEC_2024_Ciclo1\DBP_2024\Proyecto_DBP\src\main\java\com\example\alquiler_scooters\viaje\infrastructure\ViajeRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\AlquilerScootersApplication.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\AuthController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\AuthImpl.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\AuthService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\CustomUserDetails.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\dto\AuthJwtResponse.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\dto\AuthLoginRequest.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\auth\dto\AuthRegisterRequest.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\AsyncConfig.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\EmailService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\GPSUtils.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\JwtAuthenticationFilter.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\JwtService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\SecurityConfig.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\config\Util.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\estacionamiento\application\EstacionamientoController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\estacionamiento\domain\Estacionamiento.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\estacionamiento\domain\EstacionamientoService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\estacionamiento\dto\EstacionamientoDto.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\estacionamiento\infrastructure\EstacionamientoRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\eventos\SendFacturaEvent.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\eventos\SendFacturaListener.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\eventos\WelcomeEmailEvent.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\eventos\WelcomeEmailEventListener.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\excepciones\ResourceNotFoundException.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\application\FacturacionController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\domain\Facturacion.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionCreateDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionDto.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionRequest.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\domain\FacturacionService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\facturacion\infrastructure\FacturacionRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\GlobalExceptionHandler.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\metodo_pago\application\TarjetaController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\metodo_pago\domain\Tarjeta.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\metodo_pago\domain\TarjetaDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\metodo_pago\domain\TarjetaService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\metodo_pago\infrastructure\TarjetaRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\penalizacion\application\PenalizacionController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\penalizacion\domain\Penalizacion.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\penalizacion\domain\PenalizacionService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\penalizacion\infrastructure\PenalizacionRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\recompensa\application\RecompensaController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\recompensa\domain\Recompensa.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\recompensa\domain\RecompensaService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\recompensa\dto\RecompensaDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\recompensa\exceptions\InvalidDataException.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\recompensa\infrastructure\RecompensaRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\application\GeneradorCodigosQR.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\application\GeneradorImagenesQR.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\application\ScooterController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\domain\Scooter.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\domain\ScooterService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\dto\ScooterBasicDto.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\dto\ScooterDetailsDto.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\scooter\infrastructure\ScooterRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\application\UsuarioController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\domain\Role.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\domain\Usuario.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\domain\UsuarioDto.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\domain\UsuarioService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\dto\UsuarioDetallesDto.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\exceptions\UsuarioException.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\usuario\infrastructure\UsuarioRepository.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\application\ViajeController.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\domain\Viaje.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\domain\ViajeService.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\dto\FacturaViajeDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\dto\ScooterSimpleDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\dto\UpdateViajeDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\dto\UsuarioSimpleDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\dto\ViajeDTO.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\exceptions\NoViajesFoundException.java
+E:\dev\dbp\proyecto\backend - chatsito\src\main\java\com\example\alquiler_scooters\viaje\infrastructure\ViajeRepository.java
