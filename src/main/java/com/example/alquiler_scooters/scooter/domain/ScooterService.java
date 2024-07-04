@@ -31,7 +31,7 @@ public class ScooterService {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    @PostConstruct
+    /*@PostConstruct
     public void startLocationSimulation() {
         scheduler.scheduleAtFixedRate(this::updateScooterLocations, 0, 10, TimeUnit.SECONDS);
     }
@@ -51,7 +51,7 @@ public class ScooterService {
                 scooterRepository.save(scooter);
             }
         }
-    }
+    }*/
 
     private ScooterDetailsDto convertToDto(Scooter scooter) {
         return mapper.map(scooter, ScooterDetailsDto.class);

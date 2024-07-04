@@ -40,7 +40,7 @@ public class Scooter {
         MANTENIMIENTO
     }
 
-    public Scooter() {
+    /*public Scooter() {
         this.ubicacionActual = generateRandomLocation();
     }
 
@@ -55,5 +55,5 @@ public class Scooter {
         double longitude = minLongitude + (maxLongitude - minLongitude) * random.nextDouble();
 
         return latitude + ", " + longitude;
-    }
+    }*/
 }
