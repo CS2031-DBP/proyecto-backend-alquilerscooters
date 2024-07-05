@@ -36,6 +36,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello local!";
+    }
+
     // ADMIN
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
@@ -105,5 +111,17 @@ public class UsuarioController {
     public ResponseEntity<Usuario> getUsuarioByEmail(@PathVariable String email) {
         Usuario usuario = usuarioService.findByEmail(email);
         return ResponseEntity.ok(usuario);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/roleuser")
+    public String roleUser() {
+        return "Hello role user!";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/roleadmin")
+    public String roleAdmin() {
+        return "Hello role user!";
     }
 }
