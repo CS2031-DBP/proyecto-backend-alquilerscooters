@@ -3,6 +3,7 @@ package com.example.alquiler_scooters.auth;
 import com.example.alquiler_scooters.auth.dto.AuthJwtResponse;
 import com.example.alquiler_scooters.auth.dto.AuthLoginRequest;
 import com.example.alquiler_scooters.auth.dto.AuthRegisterRequest;
+import com.example.alquiler_scooters.auth.google.GoogleTokenRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthJwtResponse> login(@RequestBody AuthLoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/google/login")
+    public ResponseEntity<AuthJwtResponse> googleLogin(@RequestBody GoogleTokenRequest request) {
+        return ResponseEntity.ok(authService.loginWithGoogle(request.getToken()));
     }
 
     @GetMapping("/hello")

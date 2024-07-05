@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoogleController {
 
     @Autowired
-    GoogleService service;
+    private GoogleService service;
 
     @PostMapping("/google/validate")
     public ResponseEntity<GoogleTokenResponse> token(@RequestBody GoogleTokenRequest request) {
