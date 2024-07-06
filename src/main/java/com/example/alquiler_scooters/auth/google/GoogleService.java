@@ -1,5 +1,7 @@
 package com.example.alquiler_scooters.auth.google;
 
+import com.example.alquiler_scooters.auth.CustomUserDetails;
+import com.example.alquiler_scooters.config.JwtService;
 import com.example.alquiler_scooters.usuario.domain.Role;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.domain.UserLogin;
@@ -9,6 +11,7 @@ import com.google.api.client.json.webtoken.JsonWebSignature;
 import com.google.api.client.json.webtoken.JsonWebToken;
 import com.google.auth.oauth2.TokenVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,6 +25,12 @@ public class GoogleService {
 
     @Autowired
     private UserLoginRepository userLoginRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
 
     public GoogleTokenResponse validate(GoogleTokenRequest request) {
         TokenVerifier verifier = TokenVerifier.newBuilder().build();
@@ -46,6 +55,11 @@ public class GoogleService {
                             Usuario newUser = new Usuario();
                             newUser.setNombre(name != null ? name : givenName + " " + familyName);
                             newUser.setEmail(email);
+
+                            // Generate and encode a random password
+                            String randomPassword = PasswordGenerator.generateRandomPassword();
+                            newUser.setContrasena(passwordEncoder.encode(randomPassword));
+
                             newUser.setRole(Role.USER); // Default role USER
                             newUser.setFechaRegistro(LocalDate.now());
                             // Set other fields as necessary
@@ -59,9 +73,15 @@ public class GoogleService {
                 userLoginRepository.save(userLogin);
             }
 
-            return new GoogleTokenResponse(true);
+            CustomUserDetails userDetails = new CustomUserDetails(usuario);
+            String jwtToken = jwtService.generateToken(userDetails);
+
+            // Log the token
+            System.out.println("Generated JWT token for Google login: " + jwtToken);
+
+            return new GoogleTokenResponse(true, jwtToken);
         } catch (TokenVerifier.VerificationException e) {
-            return new GoogleTokenResponse(false);
+            return new GoogleTokenResponse(false, null);
         }
     }
 }

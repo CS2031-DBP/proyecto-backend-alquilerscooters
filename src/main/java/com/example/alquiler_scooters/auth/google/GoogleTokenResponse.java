@@ -10,5 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GoogleTokenResponse {
-    boolean validate;
+    private boolean validate;
+    private String token;
 }

@@ -7,14 +7,9 @@ import com.example.alquiler_scooters.auth.google.GoogleService;
 import com.example.alquiler_scooters.auth.google.GoogleTokenRequest;
 import com.example.alquiler_scooters.auth.google.GoogleTokenResponse;
 import com.example.alquiler_scooters.config.JwtService;
-import com.example.alquiler_scooters.usuario.domain.Role;
-import com.example.alquiler_scooters.usuario.domain.UserLogin;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import com.example.alquiler_scooters.usuario.infrastructure.UserLoginRepository;
-import com.google.api.client.json.webtoken.JsonWebSignature;
-import com.google.api.client.json.webtoken.JsonWebToken;
-import com.google.auth.oauth2.TokenVerifier;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -80,6 +75,9 @@ public class AuthService {
         CustomUserDetails userDetails = new CustomUserDetails(newUsuario);
         String token = jwtService.generateToken(userDetails);
 
+        // Log the token
+        System.out.println("Generated JWT token: " + token);
+
         return new AuthJwtResponse(token);
     }
 
@@ -91,42 +89,6 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid Google token");
         }
 
-        JsonWebSignature jsonWebSignature;
-        try {
-            jsonWebSignature = TokenVerifier.newBuilder().build().verify(token);
-        } catch (TokenVerifier.VerificationException e) {
-            throw new IllegalArgumentException("Invalid Google token");
-        }
-
-        JsonWebToken.Payload payload = jsonWebSignature.getPayload();
-        String email = (String) payload.get("email");
-
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
-        Usuario usuario;
-        if (usuarioOpt.isPresent()) {
-            usuario = usuarioOpt.get();
-        } else {
-            String name = (String) payload.get("name");
-            String givenName = (String) payload.get("given_name");
-            String familyName = (String) payload.get("family_name");
-
-            usuario = new Usuario();
-            usuario.setNombre(name != null ? name : givenName + " " + familyName);
-            usuario.setEmail(email);
-            usuario.setRole(Role.USER); // Default role USER
-            usuario.setFechaRegistro(LocalDate.now());
-            usuarioRepository.save(usuario);
-
-            UserLogin userLogin = new UserLogin();
-            userLogin.setUsuario(usuario);
-            userLogin.setProvider("google");
-            userLogin.setProviderId(payload.getSubject());
-            userLoginRepository.save(userLogin);
-        }
-
-        CustomUserDetails userDetails = new CustomUserDetails(usuario);
-        String jwtToken = jwtService.generateToken(userDetails);
-
-        return new AuthJwtResponse(jwtToken);
+        return new AuthJwtResponse(googleTokenResponse.getToken());
     }
 }
