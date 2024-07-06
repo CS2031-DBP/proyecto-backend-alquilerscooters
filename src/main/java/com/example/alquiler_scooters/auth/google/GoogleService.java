@@ -76,9 +76,6 @@ public class GoogleService {
             CustomUserDetails userDetails = new CustomUserDetails(usuario);
             String jwtToken = jwtService.generateToken(userDetails);
 
-            // Log the token
-            System.out.println("Generated JWT token for Google login: " + jwtToken);
-
             return new GoogleTokenResponse(true, jwtToken);
         } catch (TokenVerifier.VerificationException e) {
             return new GoogleTokenResponse(false, null);

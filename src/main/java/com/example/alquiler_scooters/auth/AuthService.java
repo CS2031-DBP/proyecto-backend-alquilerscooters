@@ -9,8 +9,6 @@ import com.example.alquiler_scooters.auth.google.GoogleTokenResponse;
 import com.example.alquiler_scooters.config.JwtService;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
-import com.example.alquiler_scooters.usuario.infrastructure.UserLoginRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,19 +21,15 @@ import java.util.Optional;
 public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
-    private final UserLoginRepository userLoginRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
     private final GoogleService googleService;
 
     @Autowired
-    public AuthService(UsuarioRepository usuarioRepository, UserLoginRepository userLoginRepository, JwtService jwtService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, GoogleService googleService) {
+    public AuthService(UsuarioRepository usuarioRepository, JwtService jwtService, PasswordEncoder passwordEncoder, GoogleService googleService) {
         this.usuarioRepository = usuarioRepository;
-        this.userLoginRepository = userLoginRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
         this.googleService = googleService;
     }
 
@@ -74,9 +68,6 @@ public class AuthService {
 
         CustomUserDetails userDetails = new CustomUserDetails(newUsuario);
         String token = jwtService.generateToken(userDetails);
-
-        // Log the token
-        System.out.println("Generated JWT token: " + token);
 
         return new AuthJwtResponse(token);
     }
