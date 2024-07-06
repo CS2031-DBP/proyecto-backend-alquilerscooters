@@ -3,10 +3,12 @@ package com.example.alquiler_scooters.auth;
 import com.example.alquiler_scooters.auth.dto.AuthJwtResponse;
 import com.example.alquiler_scooters.auth.dto.AuthLoginRequest;
 import com.example.alquiler_scooters.auth.dto.AuthRegisterRequest;
+import com.example.alquiler_scooters.auth.google.GoogleService;
+import com.example.alquiler_scooters.auth.google.GoogleTokenRequest;
+import com.example.alquiler_scooters.auth.google.GoogleTokenResponse;
 import com.example.alquiler_scooters.config.JwtService;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,14 +23,14 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
+    private final GoogleService googleService;
 
     @Autowired
-    public AuthService(UsuarioRepository usuarioRepository, JwtService jwtService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public AuthService(UsuarioRepository usuarioRepository, JwtService jwtService, PasswordEncoder passwordEncoder, GoogleService googleService) {
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
+        this.googleService = googleService;
     }
 
     public AuthJwtResponse login(AuthLoginRequest req) {
@@ -48,7 +50,7 @@ public class AuthService {
         return new AuthJwtResponse(token);
     }
 
-    public AuthJwtResponse register(AuthRegisterRequest req){
+    public AuthJwtResponse register(AuthRegisterRequest req) {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(req.getEmail());
         if (usuario.isPresent()) {
             throw new IllegalArgumentException("Email is already registered");
@@ -68,5 +70,16 @@ public class AuthService {
         String token = jwtService.generateToken(userDetails);
 
         return new AuthJwtResponse(token);
+    }
+
+    public AuthJwtResponse loginWithGoogle(String token) {
+        GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(token);
+        GoogleTokenResponse googleTokenResponse = googleService.validate(googleTokenRequest);
+
+        if (!googleTokenResponse.isValidate()) {
+            throw new IllegalArgumentException("Invalid Google token");
+        }
+
+        return new AuthJwtResponse(googleTokenResponse.getToken());
     }
 }
