@@ -8,6 +8,7 @@ import com.example.alquiler_scooters.auth.google.GoogleTokenRequest;
 import com.example.alquiler_scooters.auth.google.GoogleTokenResponse;
 import com.example.alquiler_scooters.config.JwtService;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
+import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -81,5 +82,12 @@ public class AuthService {
         }
 
         return new AuthJwtResponse(googleTokenResponse.getToken());
+    }
+    public String getEmailFromJwt(String token) {
+        try {
+            return jwtService.extractUsername(token);  // Assuming extractUsername extracts the email from the JWT
+        } catch (Exception e) {
+            throw new UsuarioException("Invalid token", 400);
+        }
     }
 }

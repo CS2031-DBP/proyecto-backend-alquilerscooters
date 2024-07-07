@@ -1,5 +1,6 @@
 package com.example.alquiler_scooters.auth;
 
+import com.example.alquiler_scooters.config.JwtService;
 import com.example.alquiler_scooters.usuario.domain.Role;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.domain.UsuarioService;
@@ -14,6 +15,9 @@ public class AuthImpl {
 
     @Autowired
     private UsuarioService userService;
+
+    @Autowired
+    private JwtService jwtService;
 
     public boolean isOwnerResource(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

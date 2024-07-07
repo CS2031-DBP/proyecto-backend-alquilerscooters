@@ -29,11 +29,16 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private ModelMapper mapper;
 
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-
     private UsuarioDetallesDto convertToDto(Usuario usuario) {
         return mapper.map(usuario, UsuarioDetallesDto.class);
+    }
+
+    public UsuarioDetallesDto getUserDetails(String email) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        if (usuarioOpt.isPresent()) {
+            return convertToDto(usuarioOpt.get());
+        }
+        throw new UsuarioException("User not found", 404);
     }
 
     public List<UsuarioDetallesDto> findAll() {
@@ -99,5 +104,28 @@ public class UsuarioService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name()));
         return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getContrasena(), authorities);
     }
+
+    public Usuario updateUsuarioByEmail(String email, Usuario usuarioDetalles) {
+        return usuarioRepository.findByEmail(email).map(usuario -> {
+            if (usuarioDetalles.getNombre() != null) {
+                usuario.setNombre(usuarioDetalles.getNombre());
+            }
+            if (usuarioDetalles.getEmail() != null) {
+                usuario.setEmail(usuarioDetalles.getEmail());
+            }
+            if (usuarioDetalles.getTelefono() != null) {
+                usuario.setTelefono(usuarioDetalles.getTelefono());
+            }
+            if (usuarioDetalles.getContrasena() != null) {
+                usuario.setContrasena(usuarioDetalles.getContrasena());
+            }
+            try {
+                return usuarioRepository.save(usuario);
+            } catch (Exception e) {
+                throw new UsuarioException("No puedes actualizar los datos, ya que son incorrectos", 400);
+            }
+        }).orElseThrow(() -> new UsuarioException("Usuario no encontrado con email: " + email, 400));
+    }
+
 
 }
