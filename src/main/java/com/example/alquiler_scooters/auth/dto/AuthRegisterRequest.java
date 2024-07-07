@@ -9,6 +9,6 @@ public class AuthRegisterRequest {
     String email;
     String password;
     String phone;
-    private Role role; // Asegúrate de que el Role sea una clase o enum adecuada
+    private Role role;
 
 }

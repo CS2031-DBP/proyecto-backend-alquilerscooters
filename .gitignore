@@ -32,3 +32,6 @@ build/
 .vscode/
 
 /qr_codes
+
+/target/
+

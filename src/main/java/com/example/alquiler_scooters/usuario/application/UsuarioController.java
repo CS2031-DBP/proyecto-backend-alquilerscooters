@@ -1,22 +1,20 @@
 package com.example.alquiler_scooters.usuario.application;
 
+import com.example.alquiler_scooters.auth.AuthImpl;
+import com.example.alquiler_scooters.auth.AuthService;
 import com.example.alquiler_scooters.usuario.domain.Usuario;
 import com.example.alquiler_scooters.usuario.domain.UsuarioService;
 import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
-import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import com.example.alquiler_scooters.viaje.domain.ViajeService;
 import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -27,6 +25,12 @@ public class UsuarioController {
 
     @Autowired
     private ViajeService viajeService;
+
+    @Autowired
+    private AuthImpl authImpl;
+
+    @Autowired
+    private AuthService authService;
 
     // ADMIN
     @PreAuthorize("hasRole('ADMIN')")
@@ -122,6 +126,26 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/roleadmin")
     public String roleAdmin() {
-        return "Hello role user!";
+        return "Hello role admin!";
+    }
+
+    @GetMapping("/details")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<UsuarioDetallesDto> getUserDetails(@RequestHeader("Authorization") String authHeader) {
+        String email = authImpl.getCurrentEmail();
+        UsuarioDetallesDto userDetails = usuarioService.getUserDetails(email);
+        return ResponseEntity.ok(userDetails);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PatchMapping("/me")
+    public ResponseEntity<?> updateUserDetails(@RequestHeader("Authorization") String token, @RequestBody Usuario usuarioDetalles) {
+        // Extract the JWT token from the Authorization header
+        String jwtToken = token.replace("Bearer ", "");
+        // Get the email from the JWT
+        String email = authService.getEmailFromJwt(jwtToken);
+        // Update user details
+        Usuario updatedUsuario = usuarioService.updateUsuarioByEmail(email, usuarioDetalles);
+        return ResponseEntity.ok(updatedUsuario);
     }
 }
