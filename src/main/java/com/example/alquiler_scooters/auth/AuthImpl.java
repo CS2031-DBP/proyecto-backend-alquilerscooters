@@ -16,19 +16,6 @@ public class AuthImpl {
     @Autowired
     private UsuarioService userService;
 
-    @Autowired
-    private JwtService jwtService;
-
-    public boolean isOwnerResource(Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String username = userDetails.getUsername();
-        Usuario user = userService.findByEmail(username);
-
-        // No sirve lo de admin pero lo ponemos
-        return user.getRole().equals(Role.ADMIN) || user.getId().equals(id);
-    }
-
     public String getCurrentEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

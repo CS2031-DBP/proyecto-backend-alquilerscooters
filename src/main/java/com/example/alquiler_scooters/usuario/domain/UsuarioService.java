@@ -1,12 +1,10 @@
 package com.example.alquiler_scooters.usuario.domain;
 
-import com.example.alquiler_scooters.eventos.WelcomeEmailEvent;
 import com.example.alquiler_scooters.usuario.dto.UsuarioDetallesDto;
 import com.example.alquiler_scooters.usuario.exceptions.UsuarioException;
 import com.example.alquiler_scooters.usuario.infrastructure.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
