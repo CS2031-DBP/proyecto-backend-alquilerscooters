@@ -48,7 +48,7 @@ public class AuthService {
         CustomUserDetails userDetails = new CustomUserDetails(usuario.get());
         String token = jwtService.generateToken(userDetails);
 
-        return new AuthJwtResponse(token);
+        return new AuthJwtResponse(token, usuario.get().getId());
     }
 
     public AuthJwtResponse register(AuthRegisterRequest req) {
@@ -70,7 +70,7 @@ public class AuthService {
         CustomUserDetails userDetails = new CustomUserDetails(newUsuario);
         String token = jwtService.generateToken(userDetails);
 
-        return new AuthJwtResponse(token);
+        return new AuthJwtResponse(token, newUsuario.getId());
     }
 
     public AuthJwtResponse loginWithGoogle(String token) {
@@ -81,7 +81,7 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid Google token");
         }
 
-        return new AuthJwtResponse(googleTokenResponse.getToken());
+        return new AuthJwtResponse(googleTokenResponse.getToken(), null);
     }
     public String getEmailFromJwt(String token) {
         try {

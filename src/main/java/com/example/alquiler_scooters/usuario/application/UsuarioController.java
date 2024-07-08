@@ -109,7 +109,7 @@ public class UsuarioController {
         return ResponseEntity.ok(viajes);
     }
 
-    // USER
+    // USERR
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/email/{email}")
     public ResponseEntity<Usuario> getUsuarioByEmail(@PathVariable String email) {
