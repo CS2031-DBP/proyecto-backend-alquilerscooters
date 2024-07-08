@@ -4,9 +4,13 @@ import com.example.alquiler_scooters.auth.dto.AuthJwtResponse;
 import com.example.alquiler_scooters.auth.dto.AuthLoginRequest;
 import com.example.alquiler_scooters.auth.dto.AuthRegisterRequest;
 import com.example.alquiler_scooters.auth.google.GoogleTokenRequest;
+import com.example.alquiler_scooters.scooter.domain.ScooterService;
+import com.example.alquiler_scooters.scooter.dto.ScooterDetailsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -18,6 +22,9 @@ public class AuthController {
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
+
+    @Autowired
+    ScooterService scooterService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthJwtResponse> register(@RequestBody AuthRegisterRequest request) {
@@ -37,5 +44,11 @@ public class AuthController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello LOCAL UNU?!";
+    }
+
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<ScooterDetailsDto>> getScootersByEstadoDisponible() {
+        List<ScooterDetailsDto> scooters = scooterService.findScootersByEstadoDisponible();
+        return ResponseEntity.ok(scooters);
     }
 }

@@ -74,4 +74,12 @@ public class ScooterController {
         }
     }
 
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<ScooterDetailsDto>> getScootersByEstadoDisponible() {
+        List<ScooterDetailsDto> scooters = scooterService.findScootersByEstadoDisponible();
+        return ResponseEntity.ok(scooters);
+    }
+
+
+
 }

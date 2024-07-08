@@ -99,6 +99,14 @@ public class ScooterService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<ScooterDetailsDto> findScootersByEstadoDisponible() {
+        List<Scooter> scooters = scooterRepository.findScootersByEstadoDisponible();
+        return scooters.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     public Scooter updateScooter(UUID id, Scooter scooterDetalles) {
         return scooterRepository.findById(id).map(scooter -> {
             if (scooterDetalles.getEstado() != null) {
