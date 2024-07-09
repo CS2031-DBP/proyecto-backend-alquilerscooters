@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 
 @Service
 public class ViajeService {
@@ -40,7 +40,15 @@ public class ViajeService {
     @Transactional
     public String save(ViajeDTO viajeDTO) {
         Viaje viaje = new Viaje();
-        viaje.setHoraInicio(viajeDTO.getHoraInicio());
+
+        // Establecer la hora de inicio al momento actual si no se proporciona en el DTO
+        if (viajeDTO.getHoraInicio() == null) {
+            viaje.setHoraInicio(LocalDateTime.now());
+        } else {
+            viaje.setHoraInicio(viajeDTO.getHoraInicio());
+        }
+
+        // Otras asignaciones
         viaje.setHoraFin(viajeDTO.getHoraFin());
         viaje.setPuntoPartida(viajeDTO.getPuntoPartida());
         viaje.setPuntoFin(viajeDTO.getPuntoFin());
@@ -72,12 +80,17 @@ public class ViajeService {
             LocalDateTime horaFin = LocalDateTime.now();
             String puntoFin = viaje.getScooter().getUbicacionActual();
 
+            // Lanzar una excepción si horaInicio es nula
+            if (viaje.getHoraInicio() == null) {
+                throw new RuntimeException("La hora de inicio del viaje es nula.");
+            }
+
             viaje.setHoraFin(horaFin);
             viaje.setPuntoFin(puntoFin);
 
             // Calcular el costo del viaje
             Duration duration = Duration.between(viaje.getHoraInicio(), viaje.getHoraFin());
-            long minutes = duration.toMinutes();
+            long minutes = duration.toSeconds();
             double costo = 0.5 * minutes;
             viaje.setCosto(costo);
 
@@ -132,5 +145,50 @@ public class ViajeService {
     @Transactional
     public void deleteById(UUID id) {
         viajeRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ViajeDTO> findByUsuarioEmail(String email) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        if (usuarioOpt.isPresent()) {
+            List<Viaje> viajes = viajeRepository.findByUsuarioId(usuarioOpt.get().getId());
+            if (viajes.isEmpty()) {
+                // Return an empty list to indicate no trips found
+                return Collections.emptyList();
+            }
+            return viajes.stream()
+                    .map(viaje -> modelMapper.map(viaje, ViajeDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            throw new NoViajesFoundException("No se encontró un usuario con el correo: " + email);
+        }
+    }
+
+
+    @Transactional
+    public String saveViajeWithEmailAndScooterId(String email, UUID scooterId) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        Optional<Scooter> scooterOpt = scooterRepository.findById(scooterId);
+
+        if (usuarioOpt.isPresent() && scooterOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            Scooter scooter = scooterOpt.get();
+
+            scooter.setEstado(Scooter.EstadoScooter.EN_USO);
+
+            Viaje viaje = new Viaje();
+            viaje.setUsuario(usuario);
+            viaje.setScooter(scooter);
+            viaje.setHoraInicio(LocalDateTime.now());
+            viaje.setPuntoPartida(scooter.getUbicacionActual());
+            viaje.setEstado(Viaje.EstadoViaje.ACTIVO);
+
+            scooterRepository.save(scooter);
+            Viaje savedViaje = viajeRepository.save(viaje);
+
+            return "Viaje creado con éxito con el ID: " + savedViaje.getId();
+        } else {
+            throw new RuntimeException("Usuario o Scooter no encontrado");
+        }
     }
 }
