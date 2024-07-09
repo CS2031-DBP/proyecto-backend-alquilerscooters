@@ -33,7 +33,7 @@ public class ScooterService {
 
     @PostConstruct
     public void startLocationSimulation() {
-        scheduler.scheduleAtFixedRate(this::updateScooterLocations, 0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::updateScooterLocations, 0, 5, TimeUnit.SECONDS);
     }
 
     private void updateScooterLocations() {

@@ -1,5 +1,7 @@
 package com.example.alquiler_scooters.viaje.application;
 
+import com.example.alquiler_scooters.auth.AuthImpl;
+import com.example.alquiler_scooters.auth.AuthService;
 import com.example.alquiler_scooters.viaje.domain.ViajeService;
 import com.example.alquiler_scooters.viaje.dto.ViajeDTO;
 import com.example.alquiler_scooters.viaje.exceptions.NoViajesFoundException;
@@ -18,6 +20,10 @@ import java.util.UUID;
 public class ViajeController {
     @Autowired
     private ViajeService viajeService;
+
+    @Autowired
+    private AuthImpl authImpl;
+
 
     // ADMIN
     @PreAuthorize("hasRole('ADMIN')")
@@ -70,5 +76,57 @@ public class ViajeController {
     public ResponseEntity<Void> deleteViaje(@PathVariable UUID id) {
         viajeService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/details")
+    public ResponseEntity<?> getUserViajes(@RequestHeader("Authorization") String authHeader) {
+        try {
+            String email = authImpl.getCurrentEmail(); // Suponiendo que tienes un método para obtener el correo del usuario autenticado
+            List<ViajeDTO> viajes = viajeService.findByUsuarioEmail(email);
+            if (viajes.isEmpty()) {
+                return ResponseEntity.ok("No trips found");
+            }
+            return ResponseEntity.ok(viajes);
+        } catch (NoViajesFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        }
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping("/create")
+    public ResponseEntity<String> createViaje(@RequestHeader("Authorization") String authHeader, @RequestBody ScooterIdRequest scooterIdRequest) {
+        try {
+            String email = authImpl.getCurrentEmail();
+            String message = viajeService.saveViajeWithEmailAndScooterId(email, scooterIdRequest.getScooterId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    public static class ScooterIdRequest {
+        private UUID scooterId;
+
+        public UUID getScooterId() {
+            return scooterId;
+        }
+
+        public void setScooterId(UUID scooterId) {
+            this.scooterId = scooterId;
+        }
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PatchMapping("/end/{id}")
+    public ResponseEntity<String> endTrip(@PathVariable UUID id) {
+        try {
+            String message = viajeService.finalizarViaje(id);
+            return ResponseEntity.ok(message);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
